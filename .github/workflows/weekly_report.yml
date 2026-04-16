@@ -37,10 +37,9 @@ jobs:
       - name: Enviar relatório semanal
         run: python src/send_alert.py
         env:
-          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-          EMAIL_DESTINO:    ${{ secrets.EMAIL_DESTINO }}
-          EMAIL_REMETENTE:  ${{ secrets.EMAIL_REMETENTE }}
-          FORCAR_ENVIO:     "true"
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_DESTINO:  ${{ secrets.EMAIL_DESTINO }}
+          FORCAR_ENVIO:   "true"
 
       - name: Salvar no repositório
         run: |
