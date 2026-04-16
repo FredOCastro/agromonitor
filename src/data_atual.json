@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-16T17:22:33.759630",
-  "data_coleta": "16/04/2026 17:22",
+  "timestamp": "2026-04-16T17:55:29.854363",
+  "data_coleta": "16/04/2026 17:55",
   "enso": {
     "oni_atual": 26.57,
     "oni_anterior": 26.13,
@@ -45,10 +45,10 @@
   },
   "precos": {
     "soja_cbot": {
-      "preco_usd_bushel": 11.66,
+      "preco_usd_bushel": 11.63,
       "ticker": "ZS=F",
       "moeda": "USD/bushel",
-      "preco_brl_saca": 128.28
+      "preco_brl_saca": 127.95
     },
     "milho_cbot": {
       "preco_usd_bushel": 4.58,

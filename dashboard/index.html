@@ -1,723 +1,268 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agro Monitor — Triângulo Mineiro</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f0f0; color: #1a1a1a; }
-    .header { background: #0D4A80; color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-    .header h1 { font-size: 20px; font-weight: 600; }
-    .header p { font-size: 12px; opacity: 0.8; margin-top: 2px; }
-    .header-right { font-size: 12px; opacity: 0.7; text-align: right; }
-    .tabs { background: #0a3a66; display: flex; gap: 2px; padding: 0 32px; overflow-x: auto; }
-    .tab { padding: 10px 20px; font-size: 13px; color: rgba(255,255,255,0.65); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
-    .tab.active { color: white; border-bottom: 2px solid #4fb3f0; }
-    .container { max-width: 1000px; margin: 20px auto; padding: 0 16px; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    .card { background: white; border-radius: 12px; padding: 18px 22px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
-    .card h2 { font-size: 14px; font-weight: 600; color: #444; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.04em; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    .metric { background: #f8f8f8; border-radius: 8px; padding: 14px; }
-    .metric-label { font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 6px; }
-    .metric-value { font-size: 22px; font-weight: 700; color: #1a1a1a; }
-    .metric-sub { font-size: 12px; color: #666; margin-top: 4px; }
-    .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
-    .badge-danger { background: #FCEBEB; color: #791F1F; }
-    .badge-warn { background: #FAEEDA; color: #633806; }
-    .badge-ok { background: #EAF3DE; color: #27500A; }
-    .badge-info { background: #E6F1FB; color: #0C447C; }
-    .badge-neutral { background: #f0f0f0; color: #555; }
-
-    /* ENSO */
-    .enso-track { position: relative; height: 38px; border-radius: 6px; overflow: hidden; display: flex; margin: 10px 0 4px; }
-    .enso-seg { height: 100%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; }
-    .enso-needle { position: absolute; top: 0; height: 100%; width: 3px; background: #1a1a1a; border-radius: 2px; transform: translateX(-50%); }
-    .enso-labels { display: flex; justify-content: space-between; font-size: 10px; color: #999; margin-bottom: 8px; }
-    .timeline { display: flex; margin: 10px 0; border-radius: 6px; overflow: hidden; border: 1px solid #eee; }
-    .tl-item { flex: 1; padding: 7px 3px; text-align: center; font-size: 9px; border-right: 1px solid #eee; }
-    .tl-item:last-child { border-right: none; }
-    .tl-val { font-weight: 700; font-size: 10px; }
-    .tl-mon { color: #999; margin-top: 2px; }
-    .tl-el { background: #FAEEDA; color: #854F0B; }
-    .tl-ln { background: #E6F1FB; color: #185FA5; }
-    .tl-neu { background: #f8f8f8; color: #666; }
-    .tl-current { outline: 2px solid #E24B4A; outline-offset: -2px; }
-    .impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-    .impact-item { border: 1px solid #eee; border-radius: 8px; padding: 12px; }
-    .impact-crop { font-size: 11px; color: #888; margin-bottom: 4px; }
-    .impact-effect { font-size: 13px; font-weight: 600; }
-
-    /* Safras */
-    .usda-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-    .usda-table th { background: #1D9E75; color: white; padding: 8px 10px; text-align: center; font-weight: 600; font-size: 11px; }
-    .usda-table th:first-child { text-align: left; }
-    .usda-table td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; text-align: center; }
-    .usda-table td:first-child { text-align: left; font-weight: 500; }
-    .usda-table tr:last-child td { border-bottom: none; font-weight: 700; background: #f8fff4; }
-    .usda-table tr.projecao td { background: #fff8e6; color: #854F0B; font-style: italic; }
-    .usda-table .up { color: #27500A; }
-    .usda-table .dn { color: #A32D2D; }
-    .usda-table .proj { color: #854F0B; font-style: italic; }
-    .culture-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-    .ctab { padding: 5px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid #ddd; background: white; color: #666; }
-    .ctab.active { background: #1D9E75; color: white; border-color: #1D9E75; font-weight: 600; }
-
-    /* Estoques */
-    .stock-bar-wrap { margin: 6px 0; }
-    .stock-bar-bg { background: #f0f0f0; border-radius: 4px; height: 10px; overflow: hidden; }
-    .stock-bar-fill { height: 100%; border-radius: 4px; }
-
-    /* Preços */
-    .price-change-up { color: #27500A; font-weight: 600; }
-    .price-change-dn { color: #A32D2D; font-weight: 600; }
-
-    /* Alertas */
-    .alert-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
-    .alert-item:last-child { border-bottom: none; }
-    .alert-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
-    .dot-red { background: #E24B4A; }
-    .dot-amber { background: #EF9F27; }
-    .dot-green { background: #639922; }
-    .dot-blue { background: #378ADD; }
-    .alert-text { font-size: 13px; line-height: 1.6; }
-    .alert-time { font-size: 11px; color: #aaa; margin-top: 2px; }
-
-    /* Hedge */
-    .hedge-box { background: #EAF3DE; border-radius: 8px; padding: 16px; text-align: center; }
-    .hedge-pct { font-size: 38px; font-weight: 700; color: #27500A; }
-    .hedge-label { font-size: 11px; color: #3B6D11; text-transform: uppercase; margin-bottom: 4px; }
-    .hedge-sub { font-size: 11px; color: #3B6D11; margin-top: 4px; }
-    .rec-strong { color: #0F6E56; font-weight: 600; }
-    .rec-partial { color: #BA7517; font-weight: 600; }
-    .rec-wait { color: #185FA5; font-weight: 600; }
-
-    @media (max-width: 640px) {
-      .grid-2, .grid-4, .impact-grid { grid-template-columns: 1fr; }
-      .tabs { padding: 0 12px; }
-      .container { padding: 0 10px; }
-      .header { padding: 16px 16px; }
-    }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Agro Monitor — Triângulo Mineiro</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f0f0;color:#1a1a1a;}
+.hdr{background:#8B1A1A;color:white;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.hdr h1{font-size:20px;font-weight:600;}.hdr p{font-size:12px;opacity:0.8;margin-top:2px;}
+.tabs{background:rgba(0,0,0,0.25);display:flex;gap:2px;padding:0 32px;overflow-x:auto;}
+.tab{padding:10px 20px;font-size:13px;color:rgba(255,255,255,0.65);cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;white-space:nowrap;}
+.tab.active{color:white;border-bottom:2px solid #4fb3f0;}
+.wrap{max-width:1000px;margin:20px auto;padding:0 16px;}
+.tc{display:none;}.tc.active{display:block;}
+.card{background:white;border-radius:12px;padding:18px 22px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.07);}
+.card h2{font-size:13px;font-weight:600;color:#666;border-bottom:1px solid #eee;padding-bottom:10px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.04em;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.met{background:#f8f8f8;border-radius:8px;padding:14px;}
+.ml{font-size:11px;color:#888;text-transform:uppercase;margin-bottom:6px;}
+.mv{font-size:22px;font-weight:700;}
+.ms{font-size:12px;color:#666;margin-top:4px;}
+.enso-track{position:relative;height:38px;border-radius:6px;overflow:hidden;display:flex;margin:10px 0 4px;}
+.eseg{height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;text-align:center;}
+.eneedle{position:absolute;top:0;height:100%;width:3px;background:#1a1a1a;border-radius:2px;transform:translateX(-50%);}
+.elabels{display:flex;justify-content:space-between;font-size:10px;color:#999;margin-bottom:8px;}
+.tl{display:flex;margin:10px 0;border-radius:6px;overflow:hidden;border:1px solid #eee;}
+.ti{flex:1;padding:7px 3px;text-align:center;font-size:9px;border-right:1px solid #eee;}
+.ti:last-child{border-right:none;}
+.tv{font-weight:700;font-size:10px;}.tm{color:#999;margin-top:2px;}
+.tel{background:#FAEEDA;color:#854F0B;}.tln{background:#E6F1FB;color:#185FA5;}.tne{background:#f8f8f8;color:#666;}
+.tcur{outline:2px solid #E24B4A;outline-offset:-2px;}
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.ii{border:1px solid #eee;border-radius:8px;padding:12px;}
+.ut{width:100%;border-collapse:collapse;font-size:12.5px;}
+.ut th{background:#1D9E75;color:white;padding:8px 10px;text-align:center;font-weight:600;font-size:11px;}
+.ut th:first-child{text-align:left;}
+.ut td{padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:center;}
+.ut td:first-child{text-align:left;font-weight:500;}
+.ut tr:last-child td{border-bottom:none;font-weight:700;background:#f8fff4;}
+.up{color:#27500A;}.dn{color:#A32D2D;}.proj{color:#854F0B;font-style:italic;}
+.ctabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.ctab{padding:5px 14px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid #ddd;background:white;color:#666;}
+.ctab.active{background:#1D9E75;color:white;border-color:#1D9E75;font-weight:600;}
+.hbox{background:#EAF3DE;border-radius:8px;padding:16px;text-align:center;}
+.hpct{font-size:38px;font-weight:700;color:#27500A;}
+.hlbl{font-size:11px;color:#3B6D11;text-transform:uppercase;margin-bottom:4px;}
+.hsub{font-size:11px;color:#3B6D11;margin-top:4px;}
+.ai{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #f5f5f5;}
+.ai:last-child{border-bottom:none;}
+.dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.dr{background:#E24B4A;}.da{background:#EF9F27;}.dg{background:#639922;}.db{background:#378ADD;}
+.rs{color:#0F6E56;font-weight:600;}.rp{color:#BA7517;font-weight:600;}.rw{color:#185FA5;font-weight:600;}
+@media(max-width:640px){.g2,.g4,.igrid{grid-template-columns:1fr;}.tabs{padding:0 12px;}.wrap{padding:0 10px;}.hdr{padding:16px;}}
+</style>
 </head>
 <body>
-
-<div class="header">
-  <div>
-    <h1>Agro Monitor — Triângulo Mineiro</h1>
-    <p>Araxá · Ibiá · Perdizes · Tapira &nbsp;|&nbsp; Soja · Milho · Laranja</p>
-  </div>
-  <div class="header-right">
-    <span class="badge badge-warn" style="font-size:13px;">🟠 RISCO ALTO</span><br>
-    <span style="font-size:11px;opacity:0.7;margin-top:4px;display:block;">Atualizado: 16/04/2026 07:00</span>
-  </div>
+<div class="hdr">
+  <div><h1>Agro Monitor — Triângulo Mineiro</h1><p>Araxá · Ibiá · Perdizes · Tapira &nbsp;|&nbsp; Soja · Milho · Laranja</p></div>
+  <div style="text-align:right;"><span style="background:#FCEBEB;color:#791F1F;padding:4px 12px;border-radius:6px;font-size:13px;font-weight:600;">🔴 RISCO CRITICO</span><br><span style="font-size:11px;opacity:.7;margin-top:4px;display:block;">Atualizado: 16/04/2026 17:56</span></div>
 </div>
-
 <div class="tabs">
-  <div class="tab active" onclick="showTab('clima')">Clima & ENSO</div>
-  <div class="tab" onclick="showTab('safras')">Safras Globais</div>
-  <div class="tab" onclick="showTab('estoques')">Estoques</div>
-  <div class="tab" onclick="showTab('precos')">Preços & Futuros</div>
-  <div class="tab" onclick="showTab('hedge')">Decisão de Hedge</div>
+  <button class="tab active" onclick="st('clima',this)">Clima & ENSO</button>
+  <button class="tab" onclick="st('safras',this)">Safras Globais</button>
+  <button class="tab" onclick="st('estoques',this)">Estoques</button>
+  <button class="tab" onclick="st('precos',this)">Preços & Futuros</button>
+  <button class="tab" onclick="st('hedge',this)">Decisão de Hedge</button>
 </div>
 
-<!-- ═══════════════════════════════════════════════════ CLIMA ═══ -->
-<div id="tab-clima" class="tab-content active">
-<div class="container">
-
+<div id="tab-clima" class="tc active"><div class="wrap">
   <div class="card">
     <h2>Status ENSO Atual</h2>
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-      <div>
-        <span style="font-size:16px;font-weight:600;">Transição La Niña → Neutro</span>
-        <span class="badge badge-warn" style="margin-left:8px;">Alerta El Niño em formação</span>
-      </div>
-      <span class="badge badge-danger">Risco Super El Niño 2025/26</span>
+      <span style="font-size:16px;font-weight:600;">El Niño Forte</span>
+      <span style="font-size:12px;color:#888;">ONI: <b>26.57</b> &nbsp;·&nbsp; Anterior: <b>26.13</b> &nbsp;·&nbsp; Tendência: <b style="color:#A32D2D;">subindo</b></span>
     </div>
-    <div style="font-size:11px;color:#888;margin-bottom:4px;">Índice ONI — anomalia de temperatura do Pacífico Equatorial</div>
+    <div style="font-size:11px;color:#888;margin-bottom:4px;">Índice ONI — anomalia Pacífico Equatorial</div>
     <div class="enso-track">
-      <div class="enso-seg" style="width:20%;background:#B5D4F4;color:#0C447C;">La Niña Forte<br><span style='font-size:8px'>–1.5/–2.0</span></div>
-      <div class="enso-seg" style="width:20%;background:#E6F1FB;color:#185FA5;">La Niña Fraca<br><span style='font-size:8px'>–0.5/–1.5</span></div>
-      <div class="enso-seg" style="width:20%;background:#f0f0f0;color:#666;">Neutro<br><span style='font-size:8px'>–0.5/+0.5</span></div>
-      <div class="enso-seg" style="width:20%;background:#FAEEDA;color:#854F0B;">El Niño Fraco<br><span style='font-size:8px'>+0.5/+1.5</span></div>
-      <div class="enso-seg" style="width:20%;background:#F5C4B3;color:#993C1D;">El Niño Forte<br><span style='font-size:8px'>+1.5/+2.5</span></div>
-      <div class="enso-needle" style="left:62%;"></div>
+      <div class="eseg" style="width:20%;background:#B5D4F4;color:#0C447C;">La Niña Forte<br><span style='font-size:8px'>–1.5/–2.0</span></div>
+      <div class="eseg" style="width:20%;background:#E6F1FB;color:#185FA5;">La Niña Fraca<br><span style='font-size:8px'>–0.5/–1.5</span></div>
+      <div class="eseg" style="width:20%;background:#f0f0f0;color:#666;">Neutro<br><span style='font-size:8px'>–0.5/+0.5</span></div>
+      <div class="eseg" style="width:20%;background:#FAEEDA;color:#854F0B;">El Niño Fraco<br><span style='font-size:8px'>+0.5/+1.5</span></div>
+      <div class="eseg" style="width:20%;background:#F5C4B3;color:#993C1D;">El Niño Forte<br><span style='font-size:8px'>+1.5/+2.5</span></div>
+      <div class="eneedle" style="left:98.0%;"></div>
     </div>
-    <div class="enso-labels"><span>–2.0</span><span>–1.5</span><span>–0.5</span><span>0</span><span>+0.5</span><span>+1.5</span><span>+2.5</span></div>
-    <div style="font-size:12px;color:#555;">ONI atual: <strong>+0.4</strong> (abr/2026) &nbsp;·&nbsp; Projeção jun/26: <strong>+0.8 a +1.2</strong> &nbsp;·&nbsp; Tendência: <strong style="color:#A32D2D;">subindo</strong></div>
-
-    <div style="font-size:11px;color:#888;margin:14px 0 4px;">Histórico e projeção 13 meses</div>
-    <div class="timeline">
-      <div class="tl-item tl-ln"><div class="tl-val">–1.2</div><div class="tl-mon">Jul/25</div></div>
-      <div class="tl-item tl-ln"><div class="tl-val">–0.9</div><div class="tl-mon">Ago/25</div></div>
-      <div class="tl-item tl-ln"><div class="tl-val">–0.6</div><div class="tl-mon">Set/25</div></div>
-      <div class="tl-item tl-neu"><div class="tl-val">–0.3</div><div class="tl-mon">Out/25</div></div>
-      <div class="tl-item tl-neu"><div class="tl-val">0.0</div><div class="tl-mon">Nov/25</div></div>
-      <div class="tl-item tl-neu"><div class="tl-val">+0.2</div><div class="tl-mon">Dez/25</div></div>
-      <div class="tl-item tl-neu"><div class="tl-val">+0.3</div><div class="tl-mon">Jan/26</div></div>
-      <div class="tl-item tl-neu"><div class="tl-val">+0.4</div><div class="tl-mon">Fev/26</div></div>
-      <div class="tl-item tl-neu"><div class="tl-val">+0.4</div><div class="tl-mon">Mar/26</div></div>
-      <div class="tl-item tl-neu tl-current"><div class="tl-val">+0.4</div><div class="tl-mon">Abr/26◀</div></div>
-      <div class="tl-item tl-el"><div class="tl-val">+0.7*</div><div class="tl-mon">Mai/26</div></div>
-      <div class="tl-item tl-el"><div class="tl-val">+1.0*</div><div class="tl-mon">Jun/26</div></div>
-      <div class="tl-item tl-el"><div class="tl-val">+1.3*</div><div class="tl-mon">Jul/26</div></div>
+    <div class="elabels"><span>–2.0</span><span>–1.5</span><span>–0.5</span><span>0</span><span>+0.5</span><span>+1.5</span><span>+2.5</span></div>
+    <div class="tl">
+      <div class="ti tln"><div class="tv">–1.2</div><div class="tm">Jul/25</div></div>
+      <div class="ti tln"><div class="tv">–0.9</div><div class="tm">Ago/25</div></div>
+      <div class="ti tln"><div class="tv">–0.6</div><div class="tm">Set/25</div></div>
+      <div class="ti tne"><div class="tv">–0.3</div><div class="tm">Out/25</div></div>
+      <div class="ti tne"><div class="tv">0.0</div><div class="tm">Nov/25</div></div>
+      <div class="ti tne"><div class="tv">+0.2</div><div class="tm">Dez/25</div></div>
+      <div class="ti tne"><div class="tv">+0.3</div><div class="tm">Jan/26</div></div>
+      <div class="ti tne"><div class="tv">+0.4</div><div class="tm">Fev/26</div></div>
+      <div class="ti tne"><div class="tv">+0.4</div><div class="tm">Mar/26</div></div>
+      <div class="ti tne tcur"><div class="tv">26.57</div><div class="tm">Abr/26◀</div></div>
+      <div class="ti tel"><div class="tv">+0.7*</div><div class="tm">Mai/26</div></div>
+      <div class="ti tel"><div class="tv">+1.0*</div><div class="tm">Jun/26</div></div>
+      <div class="ti tel"><div class="tv">+1.3*</div><div class="tm">Jul/26</div></div>
     </div>
-    <div style="font-size:10px;color:#aaa;">* Projeção NOAA/INPE · Fundo laranja = El Niño previsto · La Niña encerrada mar/2026 após 14 meses</div>
+    <div style="font-size:10px;color:#aaa;">* Projeção NOAA/INPE · Fundo laranja = El Niño previsto</div>
+    <div style="font-size:12px;color:#666;margin-top:8px;line-height:1.6;">El Niño Forte persistente com ONI de 26.57, em leve alta (+0.44 vs anterior). Este padrão está causando bloqueio atmosférico sobre MG, suprimindo chuvas no Triângulo Mineiro durante período crítico da safrinha.</div>
   </div>
-
   <div class="card">
-    <h2>Impactos Projetados nas Lavouras — Triângulo Mineiro</h2>
-    <div class="impact-grid">
-      <div class="impact-item">
-        <div class="impact-crop">Soja · Nov/26–Mar/27</div>
-        <div class="impact-effect" style="color:#A32D2D;">Déficit hídrico +30–40% na floração</div>
-        <div style="font-size:12px;color:#666;margin-top:4px;">El Niño forte reduz chuvas em MG no verão. Risco de queda de produtividade de 15–25%.</div>
-      </div>
-      <div class="impact-item">
-        <div class="impact-crop">Milho 1ª safra · Out–Dez/26</div>
-        <div class="impact-effect" style="color:#BA7517;">Veranico prolongado possível</div>
-        <div style="font-size:12px;color:#666;margin-top:4px;">Stress na germinação e enchimento de grão. Monitorar outubro/novembro.</div>
-      </div>
-      <div class="impact-item">
-        <div class="impact-crop">Milho 2ª safra (safrinha) · Jan–Mar/27</div>
-        <div class="impact-effect" style="color:#E24B4A;">Alto risco — Veranico crítico</div>
-        <div style="font-size:12px;color:#666;margin-top:4px;">Histórico El Niño forte = queda 20–30% em MG. Janela de plantio encurtada.</div>
-      </div>
-      <div class="impact-item">
-        <div class="impact-crop">Laranja · Floração Mai–Jul/26</div>
-        <div class="impact-effect" style="color:#3B6D11;">Efeito positivo moderado</div>
-        <div style="font-size:12px;color:#666;margin-top:4px;">El Niño tende a favorecer florada em citros do Triângulo. Monitorar estresse térmico.</div>
-      </div>
+    <h2>Impactos Projetados — Triângulo Mineiro</h2>
+    <div class="igrid">
+      <div class="ii"><div style="font-size:11px;color:#888;margin-bottom:4px;">Soja · Nov/26–Mar/27</div><div style="font-size:13px;font-weight:600;color:#A32D2D;">Déficit hídrico +30–40%</div><div style="font-size:12px;color:#666;margin-top:4px;">El Niño reduz chuvas em MG. Risco –15 a –25% produtividade.</div></div>
+      <div class="ii"><div style="font-size:11px;color:#888;margin-bottom:4px;">Milho 1ª safra · Out–Dez/26</div><div style="font-size:13px;font-weight:600;color:#BA7517;">Veranico prolongado possível</div><div style="font-size:12px;color:#666;margin-top:4px;">Stress na germinação. Monitorar outubro/novembro.</div></div>
+      <div class="ii"><div style="font-size:11px;color:#888;margin-bottom:4px;">Milho 2ª safra · Jan–Mar/27</div><div style="font-size:13px;font-weight:600;color:#E24B4A;">Alto risco — Veranico crítico</div><div style="font-size:12px;color:#666;margin-top:4px;">Histórico El Niño forte = queda 20–30% em MG.</div></div>
+      <div class="ii"><div style="font-size:11px;color:#888;margin-bottom:4px;">Laranja · Floração Mai–Jul/26</div><div style="font-size:13px;font-weight:600;color:#3B6D11;">Efeito positivo moderado</div><div style="font-size:12px;color:#666;margin-top:4px;">El Niño tende a favorecer florada em citros no Triângulo.</div></div>
     </div>
   </div>
-
   <div class="card">
     <h2>Clima Regional — Próximos 7 Dias</h2>
-    <div class="grid-4">
-      <div class="metric">
-        <div class="metric-label">Araxá</div>
-        <div class="metric-value" style="font-size:18px;">18 mm</div>
-        <div class="metric-sub">Máx 29°C · Mín 17°C</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Ibiá</div>
-        <div class="metric-value" style="font-size:18px;">22 mm</div>
-        <div class="metric-sub">Máx 30°C · Mín 18°C</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Perdizes</div>
-        <div class="metric-value" style="font-size:18px;">15 mm</div>
-        <div class="metric-sub">Máx 28°C · Mín 16°C</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Tapira</div>
-        <div class="metric-value" style="font-size:18px;">20 mm</div>
-        <div class="metric-sub">Máx 29°C · Mín 17°C</div>
-      </div>
-    </div>
-    <div style="font-size:11px;color:#aaa;margin-top:10px;">Fonte: Open-Meteo · Atualizado automaticamente a cada execução</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;"><div style="flex:1;min-width:110px;background:#f9f9f9;border-radius:8px;padding:12px;"><div style="font-size:11px;color:#888;margin-bottom:4px;">Araxá</div><div style="font-size:18px;font-weight:700;">0 mm<span style="color:#A32D2D;font-size:11px;"> ⚠ Seca</span></div><div style="font-size:11px;color:#666;">7d · 28.9°C / 15.3°C</div></div><div style="flex:1;min-width:110px;background:#f9f9f9;border-radius:8px;padding:12px;"><div style="font-size:11px;color:#888;margin-bottom:4px;">Ibiá</div><div style="font-size:18px;font-weight:700;">0 mm<span style="color:#A32D2D;font-size:11px;"> ⚠ Seca</span></div><div style="font-size:11px;color:#666;">7d · 30.0°C / 12.4°C</div></div><div style="flex:1;min-width:110px;background:#f9f9f9;border-radius:8px;padding:12px;"><div style="font-size:11px;color:#888;margin-bottom:4px;">Perdizes</div><div style="font-size:18px;font-weight:700;">0 mm<span style="color:#A32D2D;font-size:11px;"> ⚠ Seca</span></div><div style="font-size:11px;color:#666;">7d · 27.5°C / 14.0°C</div></div><div style="flex:1;min-width:110px;background:#f9f9f9;border-radius:8px;padding:12px;"><div style="font-size:11px;color:#888;margin-bottom:4px;">Tapira</div><div style="font-size:18px;font-weight:700;">0 mm<span style="color:#A32D2D;font-size:11px;"> ⚠ Seca</span></div><div style="font-size:11px;color:#666;">7d · 29.0°C / 13.1°C</div></div></div>
+    <div style="font-size:12px;color:#666;margin-top:10px;line-height:1.6;">Situação de emergência hídrica: ZERO mm de chuva nos últimos 14 dias em todas as 4 propriedades. Amplitude térmica elevada (12-15°C) indica ar seco. Alertas de seca ativos em Araxá, Ibiá, Perdizes e Tapira. Milho safrinha em estresse severo.</div>
+    <div style="font-size:10px;color:#aaa;margin-top:6px;">Fonte: Open-Meteo · Atualizado automaticamente a cada execução</div>
   </div>
+  <div class="card"><h2>Resumo da Análise</h2><p style="font-size:14px;line-height:1.8;color:#333;">SITUAÇÃO DE EMERGÊNCIA CLIMÁTICA: Suas 4 propriedades no Triângulo Mineiro completam 14 dias sem nenhuma precipitação, em pleno período crítico de enchimento de grãos da safrinha de milho. O El Niño Forte (ONI 26.57) está bloqueando a formação de chuvas na região, e os modelos não indicam alívio significativo no curto prazo. As temperaturas máximas próximas a 30°C combinadas com a ausência de água estão causando estresse hídrico severo nas lavouras.<br><br><br><br>IMPACTO PRODUTIVO E MERCADO: A safrinha de milho está em risco concreto de perdas substanciais. O USDA já projeta queda de 8% na produção brasileira, mas este número pode ser revisado para baixo caso a seca persista. Paradoxalmente, isso representa uma oportunidade de preço - milho deve subir nas próximas semanas quando o mercado precificar integralmente as perdas. Sua soja já foi colhida e está protegida; foque a atenção no milho.<br><br><br><br>ESTRATÉGIA RECOMENDADA: Para soja, aproveite o momento para aumentar hedge para 70% do volume - preço de R$ 127.95/sc é adequado e protege margem. Para milho, mantenha hedge conservador de apenas 30% - NÃO trave volume que pode não ser colhido. Monitore diariamente a previsão e avalie perdas em campo. Se chuvas chegarem em 7-10 dias, ainda há chance de recuperação parcial; se não, prepare-se para acionar seguro agrícola e renegociar contratos de entrega.</p></div>
+</div></div>
 
+<div id="tab-safras" class="tc"><div class="wrap">
   <div class="card">
-    <h2>Alertas Climáticos</h2>
-    <div class="alert-item">
-      <div class="alert-dot dot-red"></div>
-      <div><div class="alert-text">Super El Niño 2025/26: NOAA e IRI elevaram probabilidade para 65–70%. ONI deve atingir +1.5 entre agosto e novembro de 2026. Impacto severo esperado no Triângulo Mineiro.</div><div class="alert-time">Fonte: NOAA CPC · Abril/2026</div></div>
+    <h2>Produção Mundial — 3 Safras + Projeção 26/27</h2>
+    <div class="ctabs">
+      <button class="ctab active" onclick="sc('soja',this)">Soja</button>
+      <button class="ctab" onclick="sc('milho',this)">Milho</button>
+      <button class="ctab" onclick="sc('algodao',this)">Algodão</button>
     </div>
-    <div class="alert-item">
-      <div class="alert-dot dot-amber"></div>
-      <div><div class="alert-text">Temperatura do Atlântico Sul acima da média (+0.8°C) amplifica o sinal de El Niño sobre o Brasil Central. Chuvas abaixo da média projetadas para out/nov/dez 2026 em MG.</div><div class="alert-time">Fonte: INPE/CPTEC · Modelo regional ETA</div></div>
+    <div id="cs-soja">
+      <div style="font-size:11px;color:#888;margin-bottom:8px;">Milhões de Toneladas (Mt) · USDA WASDE</div>
+      <table class="ut"><thead><tr><th>País</th><th>23/24</th><th>24/25</th><th>25/26</th><th>Proj.26/27*</th></tr></thead><tbody>
+        <tr><td>🇧🇷 Brasil</td><td>153.0</td><td>163.0</td><td class="up">167.0 ▲</td><td class="proj">155.0*</td></tr>
+        <tr><td>🇺🇸 EUA</td><td>113.3</td><td>120.1</td><td class="up">121.0 ▲</td><td class="proj">122.0*</td></tr>
+        <tr><td>🇦🇷 Argentina</td><td>48.0</td><td>49.5</td><td class="dn">52.0 ▼</td><td class="proj">50.0*</td></tr>
+        <tr><td>🇨🇳 China</td><td>20.8</td><td>21.0</td><td>21.0 —</td><td class="proj">21.5*</td></tr>
+        <tr><td>🇵🇾 Paraguai</td><td>9.8</td><td>10.5</td><td class="up">11.0 ▲</td><td class="proj">10.5*</td></tr>
+        <tr><td>🌍 Mundo</td><td>396.0</td><td>421.0</td><td class="up">426.0 ▲</td><td class="proj">412.0*</td></tr>
+      </tbody></table>
+      <div style="height:220px;position:relative;margin-top:14px;"><canvas id="cSoja" role="img" aria-label="Soja"></canvas></div>
     </div>
-    <div class="alert-item">
-      <div class="alert-dot dot-blue"></div>
-      <div><div class="alert-text">La Niña 2024/25 encerrada em março/2026. Transição para fase neutra confirmada. Fenômeno durou ~14 meses.</div><div class="alert-time">Confirmação NOAA · Março/2026</div></div>
+    <div id="cs-milho" style="display:none;">
+      <div style="font-size:11px;color:#888;margin-bottom:8px;">Milhões de Toneladas (Mt) · USDA WASDE</div>
+      <table class="ut"><thead><tr><th>País</th><th>23/24</th><th>24/25</th><th>25/26</th><th>Proj.26/27*</th></tr></thead><tbody>
+        <tr><td>🇺🇸 EUA</td><td>389.7</td><td>381.5</td><td class="up">394.0 ▲</td><td class="proj">390.0*</td></tr>
+        <tr><td>🇨🇳 China</td><td>277.2</td><td>294.9</td><td class="up">298.0 ▲</td><td class="proj">300.0*</td></tr>
+        <tr><td>🇧🇷 Brasil</td><td>127.0</td><td>149.0</td><td class="dn">137.0 ▼</td><td class="proj">120.0*</td></tr>
+        <tr><td>🇦🇷 Argentina</td><td>55.0</td><td>50.0</td><td class="dn">50.0 ▼</td><td class="proj">46.0*</td></tr>
+        <tr><td>🇺🇦 Ucrânia</td><td>28.3</td><td>25.5</td><td class="dn">24.0 ▼</td><td class="proj">23.0*</td></tr>
+        <tr><td>🌍 Mundo</td><td>1234</td><td>1226</td><td class="up">1241 ▲</td><td class="proj">1220*</td></tr>
+      </tbody></table>
+      <div style="height:220px;position:relative;margin-top:14px;"><canvas id="cMilho" role="img" aria-label="Milho"></canvas></div>
     </div>
+    <div id="cs-algodao" style="display:none;">
+      <div style="font-size:11px;color:#888;margin-bottom:8px;">Milhões de Fardos · USDA WASDE</div>
+      <table class="ut"><thead><tr><th>País</th><th>23/24</th><th>24/25</th><th>25/26</th><th>Proj.26/27*</th></tr></thead><tbody>
+        <tr><td>🇨🇳 China</td><td>27.4</td><td>28.0</td><td class="up">28.5 ▲</td><td class="proj">28.0*</td></tr>
+        <tr><td>🇮🇳 Índia</td><td>24.5</td><td>23.5</td><td class="dn">23.0 ▼</td><td class="proj">23.5*</td></tr>
+        <tr><td>🇺🇸 EUA</td><td>12.5</td><td>14.3</td><td class="up">15.0 ▲</td><td class="proj">14.5*</td></tr>
+        <tr><td>🇧🇷 Brasil</td><td>16.8</td><td>17.2</td><td class="up">17.8 ▲</td><td class="proj">16.5*</td></tr>
+        <tr><td>🇵🇰 Paquistão</td><td>7.8</td><td>8.5</td><td class="up">8.8 ▲</td><td class="proj">8.5*</td></tr>
+        <tr><td>🌍 Mundo</td><td>113.8</td><td>117.4</td><td class="up">120.1 ▲</td><td class="proj">117.0*</td></tr>
+      </tbody></table>
+      <div style="height:220px;position:relative;margin-top:14px;"><canvas id="cAlg" role="img" aria-label="Algodao"></canvas></div>
+    </div>
+    <div style="font-size:10px;color:#aaa;margin-top:10px;">* Projeção preliminar · Dados de safra atualizados mensalmente com WASDE</div>
   </div>
+</div></div>
 
-</div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════ SAFRAS ═══ -->
-<div id="tab-safras" class="tab-content">
-<div class="container">
-
-  <div class="card">
-    <h2>Produção Mundial — Histórico 3 Safras + Projeção</h2>
-    <div class="culture-tabs">
-      <button class="ctab active" onclick="showCulture('soja')">Soja</button>
-      <button class="ctab" onclick="showCulture('milho')">Milho</button>
-      <button class="ctab" onclick="showCulture('algodao')">Algodão</button>
-    </div>
-
-    <!-- SOJA -->
-    <div id="culture-soja">
-      <div style="font-size:11px;color:#888;margin-bottom:8px;">Produção em Milhões de Toneladas (Mt) · Fonte: USDA WASDE</div>
-      <table class="usda-table">
-        <thead>
-          <tr>
-            <th>País</th>
-            <th>Safra 23/24</th>
-            <th>Safra 24/25</th>
-            <th>Safra 25/26</th>
-            <th class="proj">Proj. 26/27*</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>🇧🇷 Brasil</td><td>153.0</td><td>163.0</td><td class="up">167.0 ▲</td><td class="proj">155.0*</td></tr>
-          <tr><td>🇺🇸 EUA</td><td>113.3</td><td>120.1</td><td class="up">121.0 ▲</td><td class="proj">122.0*</td></tr>
-          <tr><td>🇦🇷 Argentina</td><td>48.0</td><td>49.5</td><td class="dn">52.0 ▼</td><td class="proj">50.0*</td></tr>
-          <tr><td>🇨🇳 China</td><td>20.8</td><td>21.0</td><td class="dn">21.0 —</td><td class="proj">21.5*</td></tr>
-          <tr><td>🇵🇾 Paraguai</td><td>9.8</td><td>10.5</td><td class="up">11.0 ▲</td><td class="proj">10.5*</td></tr>
-          <tr><td>🌍 Mundo</td><td>396.0</td><td>421.0</td><td class="up">426.0 ▲</td><td class="proj">412.0*</td></tr>
-        </tbody>
-      </table>
-      <div style="margin-top:14px;height:220px;position:relative;">
-        <canvas id="chartSoja" role="img" aria-label="Produção de soja por safra"></canvas>
-      </div>
-    </div>
-
-    <!-- MILHO -->
-    <div id="culture-milho" style="display:none;">
-      <div style="font-size:11px;color:#888;margin-bottom:8px;">Produção em Milhões de Toneladas (Mt) · Fonte: USDA WASDE</div>
-      <table class="usda-table">
-        <thead>
-          <tr>
-            <th>País</th>
-            <th>Safra 23/24</th>
-            <th>Safra 24/25</th>
-            <th>Safra 25/26</th>
-            <th class="proj">Proj. 26/27*</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>🇺🇸 EUA</td><td>389.7</td><td>381.5</td><td class="up">394.0 ▲</td><td class="proj">390.0*</td></tr>
-          <tr><td>🇨🇳 China</td><td>277.2</td><td>294.9</td><td class="up">298.0 ▲</td><td class="proj">300.0*</td></tr>
-          <tr><td>🇧🇷 Brasil</td><td>127.0</td><td>149.0</td><td class="dn">137.0 ▼</td><td class="proj">120.0*</td></tr>
-          <tr><td>🇦🇷 Argentina</td><td>55.0</td><td>50.0</td><td class="dn">50.0 ▼</td><td class="proj">46.0*</td></tr>
-          <tr><td>🇺🇦 Ucrânia</td><td>28.3</td><td>25.5</td><td class="dn">24.0 ▼</td><td class="proj">23.0*</td></tr>
-          <tr><td>🌍 Mundo</td><td>1234.0</td><td>1226.0</td><td class="up">1241.0 ▲</td><td class="proj">1220.0*</td></tr>
-        </tbody>
-      </table>
-      <div style="margin-top:14px;height:220px;position:relative;">
-        <canvas id="chartMilho" role="img" aria-label="Produção de milho por safra"></canvas>
-      </div>
-    </div>
-
-    <!-- ALGODÃO -->
-    <div id="culture-algodao" style="display:none;">
-      <div style="font-size:11px;color:#888;margin-bottom:8px;">Produção em Milhões de Fardos (Mfardos 480lb) · Fonte: USDA WASDE</div>
-      <table class="usda-table">
-        <thead>
-          <tr>
-            <th>País</th>
-            <th>Safra 23/24</th>
-            <th>Safra 24/25</th>
-            <th>Safra 25/26</th>
-            <th class="proj">Proj. 26/27*</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>🇨🇳 China</td><td>27.4</td><td>28.0</td><td class="up">28.5 ▲</td><td class="proj">28.0*</td></tr>
-          <tr><td>🇮🇳 Índia</td><td>24.5</td><td>23.5</td><td class="dn">23.0 ▼</td><td class="proj">23.5*</td></tr>
-          <tr><td>🇺🇸 EUA</td><td>12.5</td><td>14.3</td><td class="up">15.0 ▲</td><td class="proj">14.5*</td></tr>
-          <tr><td>🇧🇷 Brasil</td><td>16.8</td><td>17.2</td><td class="up">17.8 ▲</td><td class="proj">16.5*</td></tr>
-          <tr><td>🇵🇰 Paquistão</td><td>7.8</td><td>8.5</td><td class="up">8.8 ▲</td><td class="proj">8.5*</td></tr>
-          <tr><td>🌍 Mundo</td><td>113.8</td><td>117.4</td><td class="up">120.1 ▲</td><td class="proj">117.0*</td></tr>
-        </tbody>
-      </table>
-      <div style="margin-top:14px;height:220px;position:relative;">
-        <canvas id="chartAlgodao" role="img" aria-label="Produção de algodão por safra"></canvas>
-      </div>
-    </div>
-    <div style="font-size:10px;color:#aaa;margin-top:10px;">* Projeção preliminar sujeita a revisão · El Niño pode reduzir produção BR em 10–20%</div>
-  </div>
-
-  <div class="card">
-    <h2>Status de Colheita e Plantio — Abril/2026</h2>
-    <div class="grid-2">
-      <div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:10px;">🇧🇷 Brasil</div>
-        <div style="font-size:12px;color:#666;margin-bottom:6px;">Soja 25/26 — Colheita</div>
-        <div class="stock-bar-wrap"><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:94%;background:#1D9E75;"></div></div></div>
-        <div style="font-size:12px;color:#1D9E75;margin:2px 0 10px;font-weight:600;">94% concluída</div>
-        <div style="font-size:12px;color:#666;margin-bottom:6px;">Milho 1ª safra 26 — Plantio</div>
-        <div class="stock-bar-wrap"><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:0%;background:#BA7517;"></div></div></div>
-        <div style="font-size:12px;color:#888;margin:2px 0;">Inicia outubro/2026</div>
-      </div>
-      <div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:10px;">🇺🇸 EUA</div>
-        <div style="font-size:12px;color:#666;margin-bottom:6px;">Milho 26 — Plantio</div>
-        <div class="stock-bar-wrap"><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:8%;background:#BA7517;"></div></div></div>
-        <div style="font-size:12px;color:#BA7517;margin:2px 0 10px;font-weight:600;">8% plantado</div>
-        <div style="font-size:12px;color:#666;margin-bottom:6px;">Soja 26 — Plantio</div>
-        <div class="stock-bar-wrap"><div class="stock-bar-bg"><div class="stock-bar-fill" style="width:2%;background:#1D9E75;"></div></div></div>
-        <div style="font-size:12px;color:#888;margin:2px 0;">2% plantado · início normal</div>
-      </div>
-    </div>
-  </div>
-
-</div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════ ESTOQUES ═══ -->
-<div id="tab-estoques" class="tab-content">
-<div class="container">
-
+<div id="tab-estoques" class="tc"><div class="wrap">
   <div class="card">
     <h2>Estoques de Passagem Mundiais (Ending Stocks)</h2>
-    <div style="font-size:12px;color:#666;margin-bottom:14px;">
-      Estoque de passagem = quanto sobra ao final da safra para a próxima. Quanto menor, maior a pressão de alta nos preços.
+    <div style="font-size:12px;color:#666;margin-bottom:16px;">Quanto menor a relação E/U, maior a pressão de alta nos preços.</div>
+    <div style="font-size:13px;font-weight:600;color:#1D9E75;margin-bottom:8px;">Soja (Mt)</div>
+    <table class="ut" style="margin-bottom:16px;"><thead><tr><th>Safra</th><th>Produção</th><th>Consumo</th><th>Estoque Final</th><th>Relação E/U</th></tr></thead><tbody>
+      <tr><td>23/24</td><td>396 Mt</td><td>371 Mt</td><td>114 Mt</td><td class="up">30.7%</td></tr>
+      <tr><td>24/25</td><td>421 Mt</td><td>385 Mt</td><td>124 Mt</td><td class="up">32.2%</td></tr>
+      <tr><td>25/26</td><td>426 Mt</td><td>392 Mt</td><td class="up">128 Mt ▲</td><td class="up">32.7%</td></tr>
+      <tr style="background:#fff8e6;"><td class="proj">26/27*</td><td class="proj">412 Mt</td><td class="proj">398 Mt</td><td class="dn proj">112 Mt ▼</td><td class="dn proj">28.1%*</td></tr>
+    </tbody></table>
+    <div style="height:180px;position:relative;margin-bottom:20px;"><canvas id="cESoja" role="img" aria-label="Estoques soja"></canvas></div>
+    <div style="font-size:13px;font-weight:600;color:#BA7517;margin-bottom:8px;">Milho (Mt)</div>
+    <table class="ut" style="margin-bottom:16px;"><thead><tr><th>Safra</th><th>Produção</th><th>Consumo</th><th>Estoque Final</th><th>Relação E/U</th></tr></thead><tbody>
+      <tr><td>23/24</td><td>1234 Mt</td><td>1211 Mt</td><td>319 Mt</td><td class="dn">26.4%</td></tr>
+      <tr><td>24/25</td><td>1226 Mt</td><td>1228 Mt</td><td class="dn">317 Mt ▼</td><td class="dn">25.8%</td></tr>
+      <tr><td>25/26</td><td>1241 Mt</td><td>1235 Mt</td><td class="up">322 Mt ▲</td><td class="up">26.1%</td></tr>
+      <tr style="background:#fff8e6;"><td class="proj">26/27*</td><td class="proj">1220 Mt</td><td class="proj">1240 Mt</td><td class="dn proj">302 Mt ▼</td><td class="dn proj">24.4%*</td></tr>
+    </tbody></table>
+    <div style="height:180px;position:relative;margin-bottom:20px;"><canvas id="cEMilho" role="img" aria-label="Estoques milho"></canvas></div>
+    <div style="font-size:13px;font-weight:600;color:#534AB7;margin-bottom:8px;">Algodão (M fardos)</div>
+    <table class="ut" style="margin-bottom:16px;"><thead><tr><th>Safra</th><th>Produção</th><th>Consumo</th><th>Estoque Final</th><th>Relação E/U</th></tr></thead><tbody>
+      <tr><td>23/24</td><td>113.8</td><td>111.2</td><td>83.4</td><td class="up">75.0%</td></tr>
+      <tr><td>24/25</td><td>117.4</td><td>113.5</td><td class="up">87.3 ▲</td><td class="up">76.9%</td></tr>
+      <tr><td>25/26</td><td>120.1</td><td>115.8</td><td class="up">91.6 ▲</td><td class="up">79.1%</td></tr>
+      <tr style="background:#fff8e6;"><td class="proj">26/27*</td><td class="proj">117.0</td><td class="proj">116.5</td><td class="dn proj">88.0 ▼</td><td class="dn proj">75.5%*</td></tr>
+    </tbody></table>
+    <div style="background:#E6F1FB;border-radius:8px;padding:14px;">
+      <div style="font-size:12px;font-weight:600;color:#0C447C;margin-bottom:6px;">Como interpretar</div>
+      <div style="font-size:12px;color:#185FA5;line-height:1.8;"><b>&gt;30%</b> → Oferta confortável · <b>20–30%</b> → Equilíbrio · <b>&lt;20%</b> → Oferta apertada, pressão altista forte</div>
     </div>
-
-    <!-- SOJA ESTOQUES -->
-    <div style="font-size:13px;font-weight:600;color:#1D9E75;margin-bottom:8px;">Soja — Estoque Mundial (Mt)</div>
-    <table class="usda-table" style="margin-bottom:16px;">
-      <thead>
-        <tr><th>Safra</th><th>Produção</th><th>Consumo</th><th>Estoque Final</th><th>Relação E/U</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>23/24</td><td>396 Mt</td><td>371 Mt</td><td>114 Mt</td><td class="up">30.7%</td></tr>
-        <tr><td>24/25</td><td>421 Mt</td><td>385 Mt</td><td>124 Mt</td><td class="up">32.2%</td></tr>
-        <tr><td>25/26</td><td>426 Mt</td><td>392 Mt</td><td class="up">128 Mt ▲</td><td class="up">32.7%</td></tr>
-        <tr class="projecao"><td>26/27*</td><td>412 Mt</td><td>398 Mt</td><td class="dn">112 Mt ▼</td><td class="dn proj">28.1%*</td></tr>
-      </tbody>
-    </table>
-    <div style="height:180px;position:relative;margin-bottom:20px;">
-      <canvas id="chartEstoqueSoja" role="img" aria-label="Estoques de soja por safra"></canvas>
-    </div>
-
-    <!-- MILHO ESTOQUES -->
-    <div style="font-size:13px;font-weight:600;color:#BA7517;margin-bottom:8px;">Milho — Estoque Mundial (Mt)</div>
-    <table class="usda-table" style="margin-bottom:16px;">
-      <thead>
-        <tr><th>Safra</th><th>Produção</th><th>Consumo</th><th>Estoque Final</th><th>Relação E/U</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>23/24</td><td>1234 Mt</td><td>1211 Mt</td><td>319 Mt</td><td class="dn">26.4%</td></tr>
-        <tr><td>24/25</td><td>1226 Mt</td><td>1228 Mt</td><td class="dn">317 Mt ▼</td><td class="dn">25.8%</td></tr>
-        <tr><td>25/26</td><td>1241 Mt</td><td>1235 Mt</td><td class="up">322 Mt ▲</td><td class="up">26.1%</td></tr>
-        <tr class="projecao"><td>26/27*</td><td>1220 Mt</td><td>1240 Mt</td><td class="dn">302 Mt ▼</td><td class="dn proj">24.4%*</td></tr>
-      </tbody>
-    </table>
-    <div style="height:180px;position:relative;margin-bottom:20px;">
-      <canvas id="chartEstoqueMilho" role="img" aria-label="Estoques de milho por safra"></canvas>
-    </div>
-
-    <!-- ALGODÃO ESTOQUES -->
-    <div style="font-size:13px;font-weight:600;color:#534AB7;margin-bottom:8px;">Algodão — Estoque Mundial (M fardos)</div>
-    <table class="usda-table" style="margin-bottom:16px;">
-      <thead>
-        <tr><th>Safra</th><th>Produção</th><th>Consumo</th><th>Estoque Final</th><th>Relação E/U</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>23/24</td><td>113.8</td><td>111.2</td><td>83.4</td><td class="up">75.0%</td></tr>
-        <tr><td>24/25</td><td>117.4</td><td>113.5</td><td class="up">87.3 ▲</td><td class="up">76.9%</td></tr>
-        <tr><td>25/26</td><td>120.1</td><td>115.8</td><td class="up">91.6 ▲</td><td class="up">79.1%</td></tr>
-        <tr class="projecao"><td>26/27*</td><td>117.0</td><td>116.5</td><td class="dn">88.0 ▼</td><td class="dn proj">75.5%*</td></tr>
-      </tbody>
-    </table>
-
-    <div style="background:#E6F1FB;border-radius:8px;padding:14px;margin-top:4px;">
-      <div style="font-size:12px;font-weight:600;color:#0C447C;margin-bottom:6px;">Como interpretar a Relação E/U (Estoque/Uso)</div>
-      <div style="font-size:12px;color:#185FA5;line-height:1.7;">
-        <b>Acima de 30%</b> → Oferta confortável, pressão baixista nos preços<br>
-        <b>20–30%</b> → Equilíbrio, mercado neutro<br>
-        <b>Abaixo de 20%</b> → Oferta apertada, forte pressão altista nos preços<br>
-        <b>Projeção 26/27</b>: El Niño pode reduzir a relação E/U de soja para zona de alerta (~28%)
-      </div>
-    </div>
-    <div style="font-size:10px;color:#aaa;margin-top:8px;">* Projeção preliminar considerando impacto potencial do El Niño · Fonte: USDA WASDE Abr/2026</div>
+    <div style="font-size:10px;color:#aaa;margin-top:8px;">* Projeção considerando El Niño · Fonte: USDA WASDE Abr/2026</div>
   </div>
+</div></div>
 
-</div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════ PREÇOS ═══ -->
-<div id="tab-precos" class="tab-content">
-<div class="container">
-
+<div id="tab-precos" class="tc"><div class="wrap">
   <div class="card">
-    <h2>Preços Futuros — CBOT (Abr/2026)</h2>
-    <div class="grid-2" style="margin-bottom:12px;">
-      <div class="metric">
-        <div class="metric-label">Soja CBOT — Mai/26</div>
-        <div class="metric-value">USD 10,42/bu</div>
-        <div class="metric-sub price-change-up">▲ +1.8% na semana</div>
-        <div class="metric-sub">R$ 124,50/sc · Base Araxá: ~R$ 121/sc</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Milho CBOT — Mai/26</div>
-        <div class="metric-value">USD 4,58/bu</div>
-        <div class="metric-sub price-change-dn">▼ –0.6% na semana</div>
-        <div class="metric-sub">R$ 64,20/sc · Base Araxá: ~R$ 62/sc</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Soja CBOT — Nov/26</div>
-        <div class="metric-value">USD 10,88/bu</div>
-        <div class="metric-sub" style="color:#BA7517;">Prêmio El Niño: +4%</div>
-        <div class="metric-sub">R$ 129,90/sc estimado</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Milho CBOT — Dez/26</div>
-        <div class="metric-value">USD 4,84/bu</div>
-        <div class="metric-sub" style="color:#BA7517;">Prêmio El Niño: +5%</div>
-        <div class="metric-sub">R$ 67,80/sc estimado</div>
-      </div>
+    <h2>Preços Futuros — CBOT (tempo real)</h2>
+    <div class="g2" style="margin-bottom:12px;">
+      <div class="met"><div class="ml">Soja CBOT — spot</div><div class="mv">USD 11.63/bu</div><div class="ms">R$ 127.95/sc · câmbio R$ 5.0007</div></div>
+      <div class="met"><div class="ml">Milho CBOT — spot</div><div class="mv">USD 4.58/bu</div><div class="ms">R$ 54.05/sc</div></div>
     </div>
-    <div class="metric" style="margin-bottom:0;">
-      <div class="metric-label">Câmbio USD/BRL</div>
-      <div class="metric-value">R$ 5,95</div>
-      <div class="metric-sub">Fonte: Banco Central do Brasil · Atualizado automaticamente</div>
+    <div class="met"><div class="ml">Câmbio USD/BRL</div><div class="mv">R$ 5.0007</div><div class="ms">Fonte: Banco Central do Brasil · Atualizado automaticamente</div></div>
+    <div style="font-size:12px;color:#666;margin-top:12px;line-height:1.6;">Soja CBOT a USD 11.63/bu (R$ 127.95/sc), leve recuo de 0.26%. Milho estável a USD 4.58/bu (R$ 54.05/sc). Câmbio em R$ 5.00. Preços ainda não refletem integralmente as perdas da safrinha brasileira estimadas em -8% pelo USDA.</div>
+  </div>
+  <div class="card"><h2>Curva de Futuros — Soja CBOT (USD/bu)</h2>
+    <div style="height:200px;position:relative;"><canvas id="cSF" role="img" aria-label="Futuros soja"></canvas></div>
+  </div>
+  <div class="card"><h2>Curva de Futuros — Milho CBOT (USD/bu)</h2>
+    <div style="height:200px;position:relative;"><canvas id="cMF" role="img" aria-label="Futuros milho"></canvas></div>
+  </div>
+</div></div>
+
+<div id="tab-hedge" class="tc"><div class="wrap">
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;"><span style="background:#FCEBEB;color:#791F1F;padding:4px 12px;border-radius:6px;font-size:13px;font-weight:600;">🔴 RISCO CRITICO</span><span style="font-size:13px;color:#666;">Queda de USD 0.03/bushel na soja CBOT (de 11.66 para 11.63). Condição de seca severa persiste em todas as propriedades com 0mm de precipitação em 14 dias. El Niño Forte mantido com ONI extremamente elevado.</span></div>
+    <p style="font-size:14px;color:#333;line-height:1.8;">SOJA: Aumentar hedge para 70% - safra já colhida, preços ainda em patamar razoável (R$ 127.95/sc), proteger margem garantida. Risco de queda se safra americana vier cheia. MILHO: Reduzir hedge para apenas 30% - com perdas iminentes na safrinha devido à seca extrema, não comprometer volume que pode não existir. Aguardar definição de produtividade real antes de travar mais volume. Preços devem subir com confirmação das perdas sul-americanas.</p>
+  </div>
+  <div class="card"><h2>Recomendação de Hedge</h2>
+    <div class="g2">
+      <div class="hbox"><div class="hlbl">Soja — safra 26/27</div><div class="hpct">70%</div><div class="hsub">da produção a travar agora</div></div>
+      <div class="hbox"><div class="hlbl">Milho — 2ª safra 27</div><div class="hpct">30%</div><div class="hsub">da produção a travar agora</div></div>
     </div>
   </div>
-
-  <div class="card">
-    <h2>Curva de Futuros — Soja CBOT (USD/bu)</h2>
-    <div style="height:200px;position:relative;">
-      <canvas id="chartSojaFut" role="img" aria-label="Curva futuros soja CBOT"></canvas>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Curva de Futuros — Milho CBOT (USD/bu)</h2>
-    <div style="height:200px;position:relative;">
-      <canvas id="chartMilhoFut" role="img" aria-label="Curva futuros milho CBOT"></canvas>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Fatores de Impacto nos Preços</h2>
-    <div class="alert-item">
-      <div class="alert-dot dot-red"></div>
-      <div><div class="alert-text">El Niño forte historicamente eleva preços de soja e milho 8–18% no período nov/dez. Mercado já precifica parte do risco (prêmio de ~4-5% na curva Nov/26).</div></div>
-    </div>
-    <div class="alert-item">
-      <div class="alert-dot dot-amber"></div>
-      <div><div class="alert-text">BRL/USD em R$ 5,95. Desvalorização adicional do real (frequente em El Niño) pode elevar preços domésticos mesmo com CBOT estável.</div></div>
-    </div>
-    <div class="alert-item">
-      <div class="alert-dot dot-amber"></div>
-      <div><div class="alert-text">Argentina com safra reduzida de soja e milho 25/26. Reduz oferta global, pressão altista sobre preços até Q3/2026.</div></div>
-    </div>
-    <div class="alert-item">
-      <div class="alert-dot dot-green"></div>
-      <div><div class="alert-text">EUA com plantio de milho 26 em condições favoráveis. Safra recorde possível — pode limitar alta de preços no segundo semestre.</div></div>
-    </div>
-  </div>
-
-</div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════ HEDGE ═══ -->
-<div id="tab-hedge" class="tab-content">
-<div class="container">
-
-  <div class="card">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
-      <span class="badge badge-danger" style="font-size:13px;padding:6px 16px;">NÍVEL DE RISCO: ALTO</span>
-      <span style="font-size:13px;color:#666;">El Niño em formação + curva contango + BRL fraco</span>
-    </div>
-    <p style="font-size:13px;color:#333;line-height:1.8;">
-      O cenário atual combina três fatores que historicamente justificam hedging antecipado: (1) formação de El Niño com potencial de impacto severo em MG na safra 26/27, (2) curva de preços em contango oferecendo prêmio nos contratos futuros, e (3) câmbio favorável para exportadores. <strong>Janela de hedge estratégico: mai–jul/2026.</strong>
-    </p>
-  </div>
-
-  <div class="card">
-    <h2>Recomendação de Hedge</h2>
-    <div class="grid-2">
-      <div class="hedge-box">
-        <div class="hedge-label">Soja — safra 26/27</div>
-        <div class="hedge-pct">50–60%</div>
-        <div class="hedge-sub">da produção a travar agora</div>
-      </div>
-      <div class="hedge-box">
-        <div class="hedge-label">Milho — 2ª safra 27</div>
-        <div class="hedge-pct">40–50%</div>
-        <div class="hedge-sub">da produção a travar agora</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Tabela de Recomendações por Contrato</h2>
+  <div class="card"><h2>O Que Fazer Agora</h2><ul style="padding-left:20px;"><li style="margin-bottom:10px;font-size:14px;">URGENTE: Realizar vistoria técnica em todas as lavouras de milho safrinha para documentar estágio fenológico e nível de estresse - essencial para eventual acionamento de seguro</li><li style="margin-bottom:10px;font-size:14px;">Executar hedge de 70% da soja armazenada nos próximos 2-3 dias, aproveitando câmbio a R$ 5.00 e preço de R$ 127.95/sc</li><li style="margin-bottom:10px;font-size:14px;">NÃO aumentar posição de hedge de milho além de 30% até definição clara de produtividade - risco de não entrega</li><li style="margin-bottom:10px;font-size:14px;">Contatar corretor de seguro agrícola para verificar prazos e procedimentos de comunicação de sinistro por seca</li><li style="margin-bottom:10px;font-size:14px;">Revisar contratos de venda futura de milho - verificar cláusulas de força maior e possibilidade de renegociação de volumes</li><li style="margin-bottom:10px;font-size:14px;">Monitorar previsões de chuva diariamente - qualquer precipitação acima de 30mm nos próximos 10 dias muda o cenário</li></ul></div>
+  <div class="card"><h2>Contratos Recomendados</h2>
     <div style="overflow-x:auto;">
-      <table class="usda-table">
-        <thead>
-          <tr><th>Cultura</th><th>Safra</th><th>Contrato</th><th>Preço Ref.</th><th>% Hedge</th><th>Estratégia</th><th>Urgência</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Soja</strong></td><td>26/27</td><td>CBOT Nov/26</td>
-            <td>USD 10,88<br><span style="font-size:11px;color:#888;">~R$130/sc</span></td>
-            <td class="rec-strong">50–60%</td><td style="font-size:12px;">Venda futura B3 + Put CBOT</td>
-            <td><span class="badge badge-danger" style="font-size:11px;">Imediato</span></td>
-          </tr>
-          <tr>
-            <td><strong>Soja</strong></td><td>26/27</td><td>CBOT Jan/27</td>
-            <td>USD 10,72</td>
-            <td class="rec-partial">20–30%</td><td style="font-size:12px;">Venda futura escalonada</td>
-            <td><span class="badge badge-warn" style="font-size:11px;">Jun–Jul/26</span></td>
-          </tr>
-          <tr>
-            <td><strong>Milho</strong></td><td>2ª safra 27</td><td>CBOT Dez/26</td>
-            <td>USD 4,84<br><span style="font-size:11px;color:#888;">~R$68/sc</span></td>
-            <td class="rec-strong">40–50%</td><td style="font-size:12px;">Venda futura B3</td>
-            <td><span class="badge badge-danger" style="font-size:11px;">Imediato</span></td>
-          </tr>
-          <tr>
-            <td><strong>Milho</strong></td><td>1ª safra 26</td><td>B3 Nov/26</td>
-            <td>R$ 67/sc</td>
-            <td class="rec-partial">30–40%</td><td style="font-size:12px;">Fixação parcial CPR-F</td>
-            <td><span class="badge badge-warn" style="font-size:11px;">Mai–Jun/26</span></td>
-          </tr>
-          <tr>
-            <td><strong>Laranja</strong></td><td>26</td><td>FCOJ ICE</td>
-            <td>USD 1,68/lb</td>
-            <td class="rec-wait">Aguardar</td><td style="font-size:12px;">Monitorar florada mai/jun</td>
-            <td><span class="badge badge-info" style="font-size:11px;">Aguardar</span></td>
-          </tr>
-        </tbody>
-      </table>
+      <table class="ut"><thead><tr><th>Cultura</th><th>Safra</th><th>Contrato</th><th>% Hedge</th><th>Estratégia</th><th>Urgência</th></tr></thead><tbody>
+        <tr><td><b>Soja</b></td><td>26/27</td><td>CBOT Nov/26</td><td class="rs">50–60%</td><td style="font-size:12px;">Venda futura B3 + Put CBOT</td><td><span style="background:#FCEBEB;color:#791F1F;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">Imediato</span></td></tr>
+        <tr><td><b>Milho</b></td><td>2ª safra 27</td><td>CBOT Dez/26</td><td class="rs">40–50%</td><td style="font-size:12px;">Venda futura B3</td><td><span style="background:#FCEBEB;color:#791F1F;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">Imediato</span></td></tr>
+        <tr><td><b>Milho</b></td><td>1ª safra 26</td><td>B3 Nov/26</td><td class="rp">30–40%</td><td style="font-size:12px;">Fixação parcial CPR-F</td><td><span style="background:#FAEEDA;color:#633806;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">Mai–Jun/26</span></td></tr>
+        <tr><td><b>Laranja</b></td><td>26</td><td>FCOJ ICE</td><td class="rw">Aguardar</td><td style="font-size:12px;">Monitorar florada mai/jun</td><td><span style="background:#E6F1FB;color:#0C447C;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">Aguardar</span></td></tr>
+      </tbody></table>
     </div>
   </div>
-
-  <div class="card">
-    <h2>Cenários de Preço — Soja Nov/26 (R$/sc)</h2>
-    <div class="grid-2" style="gap:10px;">
-      <div style="border-left:3px solid #3B6D11;padding-left:12px;">
-        <div style="font-size:11px;color:#888;margin-bottom:4px;">Cenário Otimista — Prob: 20%</div>
-        <div style="font-size:20px;font-weight:700;color:#3B6D11;">R$ 138–145/sc</div>
-        <div style="font-size:12px;color:#666;margin-top:4px;">El Niño fraco, boa safra BR + ARG. CBOT pressionado para baixo.</div>
-      </div>
-      <div style="border-left:3px solid #BA7517;padding-left:12px;">
-        <div style="font-size:11px;color:#888;margin-bottom:4px;">Cenário Base — Prob: 45%</div>
-        <div style="font-size:20px;font-weight:700;color:#BA7517;">R$ 128–138/sc</div>
-        <div style="font-size:12px;color:#666;margin-top:4px;">El Niño moderado. Safra BR reduzida 10–15%. Câmbio R$5,8–6,2.</div>
-      </div>
-      <div style="border-left:3px solid #A32D2D;padding-left:12px;">
-        <div style="font-size:11px;color:#888;margin-bottom:4px;">Cenário Pessimista — Prob: 35%</div>
-        <div style="font-size:20px;font-weight:700;color:#A32D2D;">R$ 118–128/sc</div>
-        <div style="font-size:12px;color:#666;margin-top:4px;">Super El Niño: safra –25%, CBOT sobe +15% e compensa parcialmente.</div>
-      </div>
-      <div style="border-left:3px solid #534AB7;padding-left:12px;">
-        <div style="font-size:11px;color:#888;margin-bottom:4px;">Próximo evento — Mai/2026</div>
-        <div style="font-size:14px;font-weight:700;color:#534AB7;">Relatório WASDE</div>
-        <div style="font-size:12px;color:#666;margin-top:4px;">USDA publica novo balanço de oferta e demanda. Pode revisar projeções.</div>
-      </div>
-    </div>
+  <div class="card" style="background:#E6F1FB;">
+    <h2 style="color:#0C447C;">Próximo Evento a Monitorar</h2>
+    <p style="font-size:15px;font-weight:600;color:#042C53;">Relatório WASDE/USDA de Maio com revisão das estimativas de safra Brasil - provável corte adicional na projeção de milho brasileiro devido à seca</p>
+    <p style="font-size:13px;color:#185FA5;margin-top:4px;">Maio/2026</p>
   </div>
-
-</div>
-</div>
+  <p style="text-align:center;font-size:11px;color:#aaa;padding-bottom:24px;">Gerado automaticamente · Claude API + GitHub Actions · 16/04/2026 17:56</p>
+</div></div>
 
 <script>
-function showTab(name) {
-  document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(e => e.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  event.target.classList.add('active');
-}
-
-function showCulture(name) {
-  ['soja','milho','algodao'].forEach(c => {
-    document.getElementById('culture-' + c).style.display = c === name ? '' : 'none';
-  });
-  document.querySelectorAll('.ctab').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-}
-
-const gridColor = 'rgba(0,0,0,0.05)';
-const textColor = '#888';
-
-// Safras
-new Chart(document.getElementById('chartSoja'), {
-  type: 'bar',
-  data: {
-    labels: ['Brasil','EUA','Argentina','China','Paraguai'],
-    datasets: [
-      { label: '23/24', data: [153,113.3,48,20.8,9.8], backgroundColor: '#9FE1CB' },
-      { label: '24/25', data: [163,120.1,49.5,21,10.5], backgroundColor: '#1D9E75' },
-      { label: '25/26', data: [167,121,52,21,11], backgroundColor: '#085041' },
-      { label: '26/27*', data: [155,122,50,21.5,10.5], backgroundColor: '#FAEEDA', borderColor: '#BA7517', borderWidth: 1 },
-    ]
-  },
-  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, color: textColor } } }, scales: { x: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } }, y: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } } } }
-});
-
-new Chart(document.getElementById('chartMilho'), {
-  type: 'bar',
-  data: {
-    labels: ['EUA','China','Brasil','Argentina','Ucrânia'],
-    datasets: [
-      { label: '23/24', data: [389.7,277.2,127,55,28.3], backgroundColor: '#FAC775' },
-      { label: '24/25', data: [381.5,294.9,149,50,25.5], backgroundColor: '#BA7517' },
-      { label: '25/26', data: [394,298,137,50,24], backgroundColor: '#633806' },
-      { label: '26/27*', data: [390,300,120,46,23], backgroundColor: '#FAEEDA', borderColor: '#BA7517', borderWidth: 1 },
-    ]
-  },
-  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, color: textColor } } }, scales: { x: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } }, y: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } } } }
-});
-
-new Chart(document.getElementById('chartAlgodao'), {
-  type: 'bar',
-  data: {
-    labels: ['China','Índia','EUA','Brasil','Paquistão'],
-    datasets: [
-      { label: '23/24', data: [27.4,24.5,12.5,16.8,7.8], backgroundColor: '#AFA9EC' },
-      { label: '24/25', data: [28,23.5,14.3,17.2,8.5], backgroundColor: '#7F77DD' },
-      { label: '25/26', data: [28.5,23,15,17.8,8.8], backgroundColor: '#3C3489' },
-      { label: '26/27*', data: [28,23.5,14.5,16.5,8.5], backgroundColor: '#EEEDFE', borderColor: '#7F77DD', borderWidth: 1 },
-    ]
-  },
-  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, color: textColor } } }, scales: { x: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } }, y: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } } } }
-});
-
-// Estoques
-new Chart(document.getElementById('chartEstoqueSoja'), {
-  type: 'bar',
-  data: {
-    labels: ['23/24','24/25','25/26','26/27*'],
-    datasets: [
-      { label: 'Estoque Final (Mt)', data: [114,124,128,112], backgroundColor: ['#1D9E75','#1D9E75','#1D9E75','#FAEEDA'], borderColor: ['#085041','#085041','#085041','#BA7517'], borderWidth: 1 },
-    ]
-  },
-  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: textColor } , grid: { color: gridColor } }, y: { ticks: { color: textColor }, grid: { color: gridColor }, title: { display: true, text: 'Mt', color: textColor, font: { size: 11 } } } } }
-});
-
-new Chart(document.getElementById('chartEstoqueMilho'), {
-  type: 'bar',
-  data: {
-    labels: ['23/24','24/25','25/26','26/27*'],
-    datasets: [
-      { label: 'Estoque Final (Mt)', data: [319,317,322,302], backgroundColor: ['#BA7517','#BA7517','#BA7517','#FAEEDA'], borderColor: ['#633806','#633806','#633806','#BA7517'], borderWidth: 1 },
-    ]
-  },
-  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: textColor }, grid: { color: gridColor } }, y: { ticks: { color: textColor }, grid: { color: gridColor }, title: { display: true, text: 'Mt', color: textColor, font: { size: 11 } } } } }
-});
-
-// Futuros
-new Chart(document.getElementById('chartSojaFut'), {
-  type: 'line',
-  data: {
-    labels: ['Mai/26','Jul/26','Set/26','Nov/26','Jan/27','Mar/27'],
-    datasets: [{ label: 'Soja CBOT (USD/bu)', data: [10.42,10.55,10.68,10.88,10.72,10.61], borderColor: '#1D9E75', backgroundColor: 'rgba(29,158,117,0.08)', fill: true, tension: 0.3, pointRadius: 5, pointBackgroundColor: '#1D9E75' }]
-  },
-  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: 10.0, max: 11.2, ticks: { color: textColor, callback: v => '$' + v.toFixed(2) }, grid: { color: gridColor } }, x: { ticks: { color: textColor }, grid: { color: gridColor } } } }
-});
-
-new Chart(document.getElementById('chartMilhoFut'), {
-  type: 'line',
-  data: {
-    labels: ['Mai/26','Jul/26','Set/26','Dez/26','Mar/27'],
-    datasets: [{ label: 'Milho CBOT (USD/bu)', data: [4.58,4.65,4.72,4.84,4.76], borderColor: '#BA7517', backgroundColor: 'rgba(186,117,23,0.08)', fill: true, tension: 0.3, pointRadius: 5, pointBackgroundColor: '#BA7517' }]
-  },
-  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: 4.2, max: 5.2, ticks: { color: textColor, callback: v => '$' + v.toFixed(2) }, grid: { color: gridColor } }, x: { ticks: { color: textColor }, grid: { color: gridColor } } } }
-});
+function st(n,el){document.querySelectorAll('.tc').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');el.classList.add('active');}
+function sc(n,el){['soja','milho','algodao'].forEach(c=>{document.getElementById('cs-'+c).style.display=c===n?'':'none';});document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+const gc='rgba(0,0,0,0.05)',tc2='#888';
+new Chart(document.getElementById('cSoja'),{type:'bar',data:{labels:['Brasil','EUA','Argentina','China','Paraguai'],datasets:[{label:'23/24',data:[153,113.3,48,20.8,9.8],backgroundColor:'#9FE1CB'},{label:'24/25',data:[163,120.1,49.5,21,10.5],backgroundColor:'#1D9E75'},{label:'25/26',data:[167,121,52,21,11],backgroundColor:'#085041'},{label:'26/27*',data:[155,122,50,21.5,10.5],backgroundColor:'#FAEEDA',borderColor:'#BA7517',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},color:tc2}}},scales:{x:{ticks:{color:tc2},grid:{color:gc}},y:{ticks:{color:tc2},grid:{color:gc}}}}});
+new Chart(document.getElementById('cMilho'),{type:'bar',data:{labels:['EUA','China','Brasil','Argentina','Ucrânia'],datasets:[{label:'23/24',data:[389.7,277.2,127,55,28.3],backgroundColor:'#FAC775'},{label:'24/25',data:[381.5,294.9,149,50,25.5],backgroundColor:'#BA7517'},{label:'25/26',data:[394,298,137,50,24],backgroundColor:'#633806'},{label:'26/27*',data:[390,300,120,46,23],backgroundColor:'#FAEEDA',borderColor:'#BA7517',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},color:tc2}}},scales:{x:{ticks:{color:tc2},grid:{color:gc}},y:{ticks:{color:tc2},grid:{color:gc}}}}});
+new Chart(document.getElementById('cAlg'),{type:'bar',data:{labels:['China','Índia','EUA','Brasil','Paquistão'],datasets:[{label:'23/24',data:[27.4,24.5,12.5,16.8,7.8],backgroundColor:'#AFA9EC'},{label:'24/25',data:[28,23.5,14.3,17.2,8.5],backgroundColor:'#7F77DD'},{label:'25/26',data:[28.5,23,15,17.8,8.8],backgroundColor:'#3C3489'},{label:'26/27*',data:[28,23.5,14.5,16.5,8.5],backgroundColor:'#EEEDFE',borderColor:'#7F77DD',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},color:tc2}}},scales:{x:{ticks:{color:tc2},grid:{color:gc}},y:{ticks:{color:tc2},grid:{color:gc}}}}});
+new Chart(document.getElementById('cESoja'),{type:'bar',data:{labels:['23/24','24/25','25/26','26/27*'],datasets:[{label:'Estoque (Mt)',data:[114,124,128,112],backgroundColor:['#1D9E75','#1D9E75','#1D9E75','#FAEEDA'],borderColor:['#085041','#085041','#085041','#BA7517'],borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:tc2},grid:{color:gc}},y:{ticks:{color:tc2},grid:{color:gc}}}}});
+new Chart(document.getElementById('cEMilho'),{type:'bar',data:{labels:['23/24','24/25','25/26','26/27*'],datasets:[{label:'Estoque (Mt)',data:[319,317,322,302],backgroundColor:['#BA7517','#BA7517','#BA7517','#FAEEDA'],borderColor:['#633806','#633806','#633806','#BA7517'],borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:tc2},grid:{color:gc}},y:{ticks:{color:tc2},grid:{color:gc}}}}});
+new Chart(document.getElementById('cSF'),{type:'line',data:{labels:['Mai/26','Jul/26','Set/26','Nov/26','Jan/27','Mar/27'],datasets:[{label:'Soja CBOT',data:[11.63, 11.77, 11.92, 12.14, 11.97, 11.84],borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',fill:true,tension:0.3,pointRadius:5,pointBackgroundColor:'#1D9E75'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{color:tc2,callback:v=>'$'+v.toFixed(2)},grid:{color:gc}},x:{ticks:{color:tc2},grid:{color:gc}}}}});
+new Chart(document.getElementById('cMF'),{type:'line',data:{labels:['Mai/26','Jul/26','Set/26','Dez/26','Mar/27'],datasets:[{label:'Milho CBOT',data:[4.58, 4.65, 4.72, 4.84, 4.76],borderColor:'#BA7517',backgroundColor:'rgba(186,117,23,0.08)',fill:true,tension:0.3,pointRadius:5,pointBackgroundColor:'#BA7517'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{color:tc2,callback:v=>'$'+v.toFixed(2)},grid:{color:gc}},x:{ticks:{color:tc2},grid:{color:gc}}}}});
 </script>
-
-</body>
-</html>
+</body></html>
