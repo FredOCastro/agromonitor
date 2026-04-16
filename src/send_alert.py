@@ -164,4 +164,104 @@ def gerar_html(analise, dados, tipo):
         "<p style='font-size:11px;color:#888;margin:0 0 4px;text-transform:uppercase;'>Cambio USD/BRL</p>"
         "<p style='font-size:20px;font-weight:bold;color:#1a1a1a;margin:0;'>R$ " + str(usd) + "</p>"
         "<p style='font-size:12px;color:#666;margin:4px 0 0;'>Fonte: Banco Central</p>"
-        "</td></tr><tr><td colspan='3' style='padding:4px 0;'>
+        "</td></tr><tr><td colspan='3' style='padding:4px 0;'></td></tr><tr>"
+        "<td width='48%' style='background:#f8f8f8;border-radius:8px;padding:14px;'>"
+        "<p style='font-size:11px;color:#888;margin:0 0 4px;text-transform:uppercase;'>Soja CBOT</p>"
+        "<p style='font-size:20px;font-weight:bold;color:#1a1a1a;margin:0;'>USD " + str(soja.get("preco_usd_bushel","?")) + "/bu</p>"
+        "<p style='font-size:12px;color:#666;margin:4px 0 0;'>R$ " + str(soja.get("preco_brl_saca","?")) + "/sc</p>"
+        "</td><td width='4%'></td>"
+        "<td width='48%' style='background:#f8f8f8;border-radius:8px;padding:14px;'>"
+        "<p style='font-size:11px;color:#888;margin:0 0 4px;text-transform:uppercase;'>Milho CBOT</p>"
+        "<p style='font-size:20px;font-weight:bold;color:#1a1a1a;margin:0;'>USD " + str(milho.get("preco_usd_bushel","?")) + "/bu</p>"
+        "<p style='font-size:12px;color:#666;margin:4px 0 0;'>R$ " + str(milho.get("preco_brl_saca","?")) + "/sc</p>"
+        "</td></tr></table></td></tr>"
+
+        # Hedge
+        "<tr><td style='padding:0 32px 20px;'>"
+        "<h2 style='font-size:15px;color:#1a1a1a;margin:0 0 10px;border-bottom:1px solid #eee;padding-bottom:8px;'>Recomendacao de Hedge</h2>"
+        "<table width='100%' cellpadding='0' cellspacing='8'><tr>"
+        "<td width='48%' style='background:#EAF3DE;border-radius:8px;padding:14px;text-align:center;'>"
+        "<p style='font-size:11px;color:#3B6D11;margin:0 0 4px;text-transform:uppercase;'>Soja safra 26/27</p>"
+        "<p style='font-size:28px;font-weight:bold;color:#27500A;margin:0;'>" + str(hs) + "%</p>"
+        "<p style='font-size:11px;color:#3B6D11;margin:4px 0 0;'>da producao a travar agora</p>"
+        "</td><td width='4%'></td>"
+        "<td width='48%' style='background:#EAF3DE;border-radius:8px;padding:14px;text-align:center;'>"
+        "<p style='font-size:11px;color:#3B6D11;margin:0 0 4px;text-transform:uppercase;'>Milho 2a safra 27</p>"
+        "<p style='font-size:28px;font-weight:bold;color:#27500A;margin:0;'>" + str(hm) + "%</p>"
+        "<p style='font-size:11px;color:#3B6D11;margin:4px 0 0;'>da producao a travar agora</p>"
+        "</td></tr></table>"
+        "<p style='font-size:13px;color:#555;margin:12px 0 0;line-height:1.6;'>" + justif + "</p>"
+        "</td></tr>"
+
+        # Acoes
+        "<tr><td style='padding:0 32px 20px;'>"
+        "<h2 style='font-size:15px;color:#1a1a1a;margin:0 0 10px;border-bottom:1px solid #eee;padding-bottom:8px;'>O Que Fazer Agora</h2>"
+        "<ul style='font-size:14px;color:#333;line-height:1.7;margin:0;padding-left:20px;'>" + acoes_li + "</ul>"
+        "</td></tr>"
+
+        # Proximo evento
+        "<tr><td style='padding:0 32px 20px;'>"
+        "<div style='background:#E6F1FB;border-radius:8px;padding:14px;'>"
+        "<p style='font-size:11px;color:#185FA5;margin:0 0 4px;text-transform:uppercase;'>Proximo evento a monitorar</p>"
+        "<p style='font-size:14px;color:#0C447C;margin:0;font-weight:bold;'>" + pe + "</p>"
+        "<p style='font-size:12px;color:#185FA5;margin:4px 0 0;'>" + pd + "</p>"
+        "</div></td></tr>"
+
+        # Footer
+        "<tr><td style='background:#f8f8f8;padding:16px 32px;border-top:1px solid #eee;'>"
+        "<p style='font-size:11px;color:#999;margin:0;text-align:center;'>"
+        "Agro Monitor · Triangulo Mineiro · Gerado automaticamente via Claude API + GitHub Actions"
+        "</p></td></tr>"
+
+        "</table></td></tr></table></body></html>"
+    )
+
+def enviar_email(assunto, html_body):
+    if not RESEND_API_KEY:
+        print("[AVISO] RESEND_API_KEY nao configurada. Email nao enviado.")
+        return False
+    if not EMAIL_DESTINO:
+        print("[AVISO] EMAIL_DESTINO nao configurado.")
+        return False
+    payload = {
+        "from": "Agro Monitor <onboarding@resend.dev>",
+        "to": [EMAIL_DESTINO],
+        "subject": assunto,
+        "html": html_body
+    }
+    response = requests.post(
+        "https://api.resend.com/emails",
+        headers={"Authorization": f"Bearer {RESEND_API_KEY}", "Content-Type": "application/json"},
+        json=payload, timeout=15
+    )
+    if response.status_code in (200, 201):
+        print(f"Email enviado com sucesso para {EMAIL_DESTINO}")
+        return True
+    else:
+        print(f"[ERRO] Falha ao enviar email: {response.status_code} — {response.text}")
+        return False
+
+def main():
+    print("\n" + "="*50)
+    print("AGRO MONITOR — Envio de alertas")
+    print(f"Data/hora: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
+    print("="*50 + "\n")
+    with open(ANALISE_PATH, encoding="utf-8") as f:
+        analise = json.load(f)
+    with open(DATA_PATH, encoding="utf-8") as f:
+        dados = json.load(f)
+    deve_enviar = FORCAR_ENVIO or analise.get("alerta_imediato", False)
+    tipo = "relatorio" if FORCAR_ENVIO and not analise.get("alerta_imediato") else "alerta"
+    if deve_enviar:
+        print(f"Preparando email ({tipo})...")
+        assunto = analise.get("assunto_email", "Agro Monitor — Atualizacao")
+        if FORCAR_ENVIO and tipo == "relatorio":
+            assunto = f"Relatorio Semanal Agro Monitor — {datetime.now().strftime('%d/%m/%Y')}"
+        html = gerar_html(analise, dados, tipo)
+        enviar_email(assunto, html)
+    else:
+        print("Sem mudancas relevantes. Nenhum alerta enviado.")
+    print("\nProcesso de alerta concluido.\n")
+
+if __name__ == "__main__":
+    main()
