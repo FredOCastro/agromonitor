@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agro Monitor — Triângulo Mineiro</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f0f0; color: #1a1a1a; }
+    .header { background: #0D4A80; color: white; padding: 24px 32px; }
+    .header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+    .header p { font-size: 13px; opacity: 0.8; }
+    .container { max-width: 900px; margin: 24px auto; padding: 0 16px; }
+    .card { background: white; border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+    .card h2 { font-size: 15px; font-weight: 600; margin-bottom: 14px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .metric { background: #f8f8f8; border-radius: 8px; padding: 14px; }
+    .metric-label { font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 6px; }
+    .metric-value { font-size: 24px; font-weight: 700; color: #1a1a1a; }
+    .metric-sub { font-size: 12px; color: #666; margin-top: 4px; }
+    .hedge-box { background: #EAF3DE; border-radius: 8px; padding: 16px; text-align: center; }
+    .hedge-pct { font-size: 36px; font-weight: 700; color: #27500A; }
+    .hedge-label { font-size: 11px; color: #3B6D11; text-transform: uppercase; margin-bottom: 4px; }
+    .hedge-sub { font-size: 11px; color: #3B6D11; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; }
+    td { border-bottom: 1px solid #f0f0f0; }
+    tr:last-child td { border-bottom: none; }
+    .update-bar { text-align: center; font-size: 11px; color: #999; margin-bottom: 20px; }
+    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="header">
+  <h1>Agro Monitor — Triângulo Mineiro</h1>
+  <p>Araxá · Ibiá · Perdizes · Tapira &nbsp;|&nbsp; Soja · Milho · Laranja</p>
+</div>
+<div class="container">
+  <div class="update-bar">
+    Última atualização: 16/04/2026 17:23 &nbsp;·&nbsp; <span style="background:#E6F1FB;color:#0C447C;padding:4px 12px;border-radius:6px;font-size:13px;font-weight:bold;">🔵 RISCO CRITICO</span>
+  </div>
+  <div class="card">
+    <h2>Situação Atual</h2>
+    <p style="font-size:14px;line-height:1.8;color:#333;">
+      SITUAÇÃO CRÍTICA: Suas 4 fazendas no Triângulo Mineiro enfrentam seca severa com zero precipitação nos últimos 14 dias. O El Niño Forte está intensificando as condições secas típicas do outono na região, criando um cenário de alto risco para a safrinha de milho que está em fase de enchimento de grãos.<br><br><br><br>IMPACTO NAS CULTURAS: A safrinha de milho (2ª safra) é a mais afetada - abril é crítico para definição de produtividade e a falta de chuvas pode reduzir rendimento em 25-40%. A soja tardia ainda em colheita pode sofrer perdas de qualidade. A laranja, cultura perene, demandará irrigação suplementar para evitar queda de frutos.<br><br><br><br>RECOMENDAÇÃO URGENTE: Momento é favorável para hedge agressivo. Preços internacionais ainda estão relativamente estáveis e não precificaram totalmente a quebra brasileira. Recomendo travar 85% do milho safrinha e 75% da soja nos níveis atuais. O mercado deve reagir nas próximas 2-3 semanas quando relatórios de quebra de safra forem divulgados.
+    </p>
+  </div>
+  <div class="card">
+    <h2>ENSO & Preços</h2>
+    <div class="grid-2">
+      <div class="metric">
+        <div class="metric-label">Índice ONI (El Niño/La Niña)</div>
+        <div class="metric-value">26.57</div>
+        <div class="metric-sub">El Niño Forte · subindo</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Câmbio USD/BRL</div>
+        <div class="metric-value">R$ 5.0007</div>
+        <div class="metric-sub">Fonte: Banco Central do Brasil</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Soja CBOT</div>
+        <div class="metric-value">USD 11.66/bu</div>
+        <div class="metric-sub">R$ 128.28/saca</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Milho CBOT</div>
+        <div class="metric-value">USD 4.58/bu</div>
+        <div class="metric-sub">R$ 54.05/saca</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Clima Regional — Próximos 7 Dias</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:120px;background:#f9f9f9;border-radius:8px;padding:12px;">
+              <div style="font-size:11px;color:#888;margin-bottom:4px;">Araxá</div>
+              <div style="font-size:18px;font-weight:bold;color:#1a1a1a;">0 mm<span style="color:#A32D2D;font-size:11px;"> ⚠ Seca</span></div>
+              <div style="font-size:11px;color:#666;">7 dias · 28.9°C / 15.3°C</div>
+            </div>
+            <div style="flex:1;min-width:120px;background:#f9f9f9;border-radius:8px;padding:12px;">
+              <div style="font-size:11px;color:#888;margin-bottom:4px;">Ibiá</div>
+              <div style="font-size:18px;font-weight:bold;color:#1a1a1a;">0 mm<span style="color:#A32D2D;font-size:11px;"> ⚠ Seca</span></div>
+              <div style="font-size:11px;color:#666;">7 dias · 30.0°C / 12.4°C</div>
+            </div>
+            <div style="flex:1;min-width:120px;background:#f9f9f9;border-radius:8px;padding:12px;">
+              <div style="font-size:11px;color:#888;margin-bottom:4px;">Perdizes</div>
+              <div style="font-size:18px;font-weight:bold;color:#1a1a1a;">0 mm<span style="color:#A32D2D;font-size:11px;"> ⚠ Seca</span></div>
+              <div style="font-size:11px;color:#666;">7 dias · 27.5°C / 14.0°C</div>
+            </div>
+            <div style="flex:1;min-width:120px;background:#f9f9f9;border-radius:8px;padding:12px;">
+              <div style="font-size:11px;color:#888;margin-bottom:4px;">Tapira</div>
+              <div style="font-size:18px;font-weight:bold;color:#1a1a1a;">0 mm<span style="color:#A32D2D;font-size:11px;"> ⚠ Seca</span></div>
+              <div style="font-size:11px;color:#666;">7 dias · 29.0°C / 13.1°C</div>
+            </div></div>
+  </div>
+  <div class="card">
+    <h2>Recomendação de Hedge</h2>
+    <div class="grid-2">
+      <div class="hedge-box">
+        <div class="hedge-label">Soja — safra 26/27</div>
+        <div class="hedge-pct">75%</div>
+        <div class="hedge-sub">da produção a travar agora</div>
+      </div>
+      <div class="hedge-box">
+        <div class="hedge-label">Milho — 2ª safra 27</div>
+        <div class="hedge-pct">85%</div>
+        <div class="hedge-sub">da produção a travar agora</div>
+      </div>
+    </div>
+    <p style="font-size:13px;color:#555;margin-top:14px;line-height:1.6;">
+      Com seca severa afetando a safrinha de milho em estágio crítico (abril) e risco de perdas de 20-40% na produtividade, recomenda-se hedge agressivo para garantir margens. Milho 2ª safra é o mais vulnerável. Soja em colheita pode ter perdas de qualidade. Travar preços atuais antes que mercado precifique quebra brasileira.
+    </p>
+  </div>
+  <div class="card">
+    <h2>O Que Fazer Agora</h2>
+    <ul style="padding-left:20px;"><li style="margin-bottom:10px;font-size:14px;">URGENTE: Executar hedge de 85% da produção estimada de milho safrinha via contratos futuros ou CPR com trava</li><li style="margin-bottom:10px;font-size:14px;">Travar 75% da soja remanescente aos preços atuais (R$128/saca) antes da precificação da quebra sulamericana</li><li style="margin-bottom:10px;font-size:14px;">Reavaliar projeção de produtividade do milho safrinha - considerar cenário de perda de 30-40%</li><li style="margin-bottom:10px;font-size:14px;">Verificar cobertura de seguro agrícola e acionar vistoria para laudo de seca se aplicável</li><li style="margin-bottom:10px;font-size:14px;">Iniciar irrigação de salvamento na laranja para evitar abortamento de frutos</li><li style="margin-bottom:10px;font-size:14px;">Monitorar previsões diariamente - qualquer chuva nos próximos 10 dias é crítica para o milho</li></ul>
+  </div>
+  <div class="grid-2" style="margin-bottom:16px;">
+    <div class="card" style="margin-bottom:0;">
+      <h2>Soja Global (Mi ton)</h2>
+      <table>
+        <thead><tr>
+          <th style="text-align:left;font-size:11px;color:#888;padding-bottom:6px;">País</th>
+          <th style="text-align:right;font-size:11px;color:#888;padding-bottom:6px;">Prod.</th>
+          <th style="text-align:right;font-size:11px;color:#888;padding-bottom:6px;">Var.</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+          <td style="padding:8px 0;font-size:13px;">Brasil</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;">167 Mt</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;color:#27500A;">▲ 2%</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;font-size:13px;">EUA</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;">121 Mt</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;color:#27500A;">▲ 1%</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;font-size:13px;">Argentina</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;">52 Mt</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;color:#A32D2D;">▼ 5%</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;font-size:13px;">China</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;">21 Mt</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;color:#A32D2D;">▼ 1%</td>
+        </tr></tbody>
+      </table>
+    </div>
+    <div class="card" style="margin-bottom:0;">
+      <h2>Milho Global (Mi ton)</h2>
+      <table>
+        <thead><tr>
+          <th style="text-align:left;font-size:11px;color:#888;padding-bottom:6px;">País</th>
+          <th style="text-align:right;font-size:11px;color:#888;padding-bottom:6px;">Prod.</th>
+          <th style="text-align:right;font-size:11px;color:#888;padding-bottom:6px;">Var.</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+          <td style="padding:8px 0;font-size:13px;">EUA</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;">394 Mt</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;color:#27500A;">▲ 3%</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;font-size:13px;">China</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;">298 Mt</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;color:#A32D2D;">▼ 0%</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;font-size:13px;">Brasil</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;">137 Mt</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;color:#A32D2D;">▼ 8%</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;font-size:13px;">Argentina</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;">50 Mt</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;color:#A32D2D;">▼ 4%</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 0;font-size:13px;">Ucrânia</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;">24 Mt</td>
+          <td style="padding:8px 0;font-size:13px;text-align:right;color:#A32D2D;">▼ 12%</td>
+        </tr></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card" style="background:#E6F1FB;">
+    <h2 style="color:#0C447C;">Próximo Evento a Monitorar</h2>
+    <p style="font-size:15px;font-weight:600;color:#042C53;">Relatório WASDE/USDA de Maio com possível revisão para baixo da safra brasileira de milho</p>
+    <p style="font-size:13px;color:#185FA5;margin-top:4px;">Maio/2026</p>
+  </div>
+  <p style="text-align:center;font-size:11px;color:#aaa;margin-top:8px;padding-bottom:24px;">
+    Gerado automaticamente · Claude API + GitHub Actions · 16/04/2026 17:23
+  </p>
+</div>
+</body>
+</html>

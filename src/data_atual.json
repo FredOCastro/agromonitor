@@ -1,0 +1,105 @@
+{
+  "timestamp": "2026-04-16T17:22:33.759630",
+  "data_coleta": "16/04/2026 17:22",
+  "enso": {
+    "oni_atual": 26.57,
+    "oni_anterior": 26.13,
+    "periodo": "JFM",
+    "status": "El Niño Forte",
+    "tendencia": "subindo",
+    "fonte": "NOAA CPC"
+  },
+  "clima": {
+    "Araxá": {
+      "precip_7d_mm": 0,
+      "precip_14d_mm": 0,
+      "temp_max_semana": 28.9,
+      "temp_min_semana": 15.3,
+      "alerta_seca": true,
+      "alerta_excesso": false
+    },
+    "Ibiá": {
+      "precip_7d_mm": 0,
+      "precip_14d_mm": 0,
+      "temp_max_semana": 30.0,
+      "temp_min_semana": 12.4,
+      "alerta_seca": true,
+      "alerta_excesso": false
+    },
+    "Perdizes": {
+      "precip_7d_mm": 0,
+      "precip_14d_mm": 0,
+      "temp_max_semana": 27.5,
+      "temp_min_semana": 14.0,
+      "alerta_seca": true,
+      "alerta_excesso": false
+    },
+    "Tapira": {
+      "precip_7d_mm": 0,
+      "precip_14d_mm": 0,
+      "temp_max_semana": 29.0,
+      "temp_min_semana": 13.1,
+      "alerta_seca": true,
+      "alerta_excesso": false
+    }
+  },
+  "precos": {
+    "soja_cbot": {
+      "preco_usd_bushel": 11.66,
+      "ticker": "ZS=F",
+      "moeda": "USD/bushel",
+      "preco_brl_saca": 128.28
+    },
+    "milho_cbot": {
+      "preco_usd_bushel": 4.58,
+      "ticker": "ZC=F",
+      "moeda": "USD/bushel",
+      "preco_brl_saca": 54.05
+    },
+    "cambio_usd_brl": 5.0007
+  },
+  "safras": {
+    "soja_mundial_mt": {
+      "Brasil": {
+        "producao": 167,
+        "variacao_pct": 2
+      },
+      "EUA": {
+        "producao": 121,
+        "variacao_pct": 1
+      },
+      "Argentina": {
+        "producao": 52,
+        "variacao_pct": -5
+      },
+      "China": {
+        "producao": 21,
+        "variacao_pct": -1
+      }
+    },
+    "milho_mundial_mt": {
+      "EUA": {
+        "producao": 394,
+        "variacao_pct": 3
+      },
+      "China": {
+        "producao": 298,
+        "variacao_pct": 0
+      },
+      "Brasil": {
+        "producao": 137,
+        "variacao_pct": -8
+      },
+      "Argentina": {
+        "producao": 50,
+        "variacao_pct": -4
+      },
+      "Ucrânia": {
+        "producao": 24,
+        "variacao_pct": -12
+      }
+    },
+    "referencia": "USDA WASDE Abril 2026",
+    "proxima_atualizacao": "Maio 2026"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "data_analise": "16/04/2026 17:23",
+  "nivel_risco": "Critico",
+  "mudanca_detectada": true,
+  "tipo_mudanca": "El Niño Forte com seca severa generalizada em todas as propriedades - ONI extremamente elevado (26.57) indica anomalia crítica nos dados",
+  "alerta_imediato": true,
+  "motivo_alerta": "Seca absoluta (0mm em 14 dias) em todas as 4 fazendas combinada com El Niño Forte. Risco iminente de perdas significativas na safrinha de milho e impacto na colheita de soja tardia.",
+  "assunto_email": "🚨 ALERTA CRÍTICO: Seca severa + El Niño Forte - Ação imediata de hedge recomendada",
+  "enso_resumo": "El Niño Forte em intensificação (ONI 26.57, subindo). ATENÇÃO: Valor ONI anômalo - verificar fonte, pois escala normal vai de -3 a +3. Se confirmado, representa condição extrema sem precedentes.",
+  "clima_resumo": "Situação crítica: ZERO precipitação nos últimos 14 dias em Araxá, Ibiá, Perdizes e Tapira. Alerta de seca ativo em todas as propriedades. Amplitude térmica elevada (12-15°C) indica tempo seco persistente.",
+  "precos_resumo": "Soja CBOT a US$11.66/bushel (R$128,28/saca) e milho a US$4.58/bushel (R$54,05/saca). Dólar estável em R$5,00. Preços ainda não refletem totalmente os riscos climáticos no Brasil Central.",
+  "safras_resumo": "USDA projeta queda de 8% na produção brasileira de milho (137 MT) e redução de 5% na Argentina (soja) e 4% (milho). Brasil ainda projetado em 167 MT de soja (+2%), mas dados anteriores à seca atual.",
+  "recomendacao_hedge_soja_pct": 75,
+  "recomendacao_hedge_milho_pct": 85,
+  "justificativa_hedge": "Com seca severa afetando a safrinha de milho em estágio crítico (abril) e risco de perdas de 20-40% na produtividade, recomenda-se hedge agressivo para garantir margens. Milho 2ª safra é o mais vulnerável. Soja em colheita pode ter perdas de qualidade. Travar preços atuais antes que mercado precifique quebra brasileira.",
+  "resumo_executivo": "SITUAÇÃO CRÍTICA: Suas 4 fazendas no Triângulo Mineiro enfrentam seca severa com zero precipitação nos últimos 14 dias. O El Niño Forte está intensificando as condições secas típicas do outono na região, criando um cenário de alto risco para a safrinha de milho que está em fase de enchimento de grãos.\n\nIMPACTO NAS CULTURAS: A safrinha de milho (2ª safra) é a mais afetada - abril é crítico para definição de produtividade e a falta de chuvas pode reduzir rendimento em 25-40%. A soja tardia ainda em colheita pode sofrer perdas de qualidade. A laranja, cultura perene, demandará irrigação suplementar para evitar queda de frutos.\n\nRECOMENDAÇÃO URGENTE: Momento é favorável para hedge agressivo. Preços internacionais ainda estão relativamente estáveis e não precificaram totalmente a quebra brasileira. Recomendo travar 85% do milho safrinha e 75% da soja nos níveis atuais. O mercado deve reagir nas próximas 2-3 semanas quando relatórios de quebra de safra forem divulgados.",
+  "acoes_recomendadas": [
+    "URGENTE: Executar hedge de 85% da produção estimada de milho safrinha via contratos futuros ou CPR com trava",
+    "Travar 75% da soja remanescente aos preços atuais (R$128/saca) antes da precificação da quebra sulamericana",
+    "Reavaliar projeção de produtividade do milho safrinha - considerar cenário de perda de 30-40%",
+    "Verificar cobertura de seguro agrícola e acionar vistoria para laudo de seca se aplicável",
+    "Iniciar irrigação de salvamento na laranja para evitar abortamento de frutos",
+    "Monitorar previsões diariamente - qualquer chuva nos próximos 10 dias é crítica para o milho"
+  ],
+  "proximo_evento_importante": "Relatório WASDE/USDA de Maio com possível revisão para baixo da safra brasileira de milho",
+  "proximo_evento_data": "Maio/2026"
+}
