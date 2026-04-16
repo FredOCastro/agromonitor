@@ -1,6 +1,6 @@
 """
 send_alert.py
-Envia alertas por email usando SendGrid.
+Envia alertas por email usando Resend.
 """
 
 import json
@@ -8,9 +8,8 @@ import os
 from datetime import datetime
 import requests
 
-SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY", "")
-EMAIL_DESTINO    = os.environ.get("EMAIL_DESTINO", "")
-EMAIL_REMETENTE  = os.environ.get("EMAIL_REMETENTE", "")
+RESEND_API_KEY  = os.environ.get("RESEND_API_KEY", "")
+EMAIL_DESTINO   = os.environ.get("EMAIL_DESTINO", "")
 
 BASE_DIR     = os.path.dirname(__file__)
 ANALISE_PATH = os.path.join(BASE_DIR, "analise.json")
@@ -134,24 +133,24 @@ def gerar_html_alerta(analise, dados, tipo="alerta"):
 </html>"""
 
 def enviar_email(assunto, html_body):
-    if not SENDGRID_API_KEY:
-        print("[AVISO] SENDGRID_API_KEY não configurada. Email não enviado.")
+    if not RESEND_API_KEY:
+        print("[AVISO] RESEND_API_KEY não configurada. Email não enviado.")
         return False
-    if not EMAIL_DESTINO or not EMAIL_REMETENTE:
-        print("[AVISO] EMAIL_DESTINO ou EMAIL_REMETENTE não configurados.")
+    if not EMAIL_DESTINO:
+        print("[AVISO] EMAIL_DESTINO não configurado.")
         return False
     payload = {
-        "personalizations": [{"to": [{"email": EMAIL_DESTINO}]}],
-        "from": {"email": EMAIL_REMETENTE, "name": "Agro Monitor"},
+        "from": "Agro Monitor <onboarding@resend.dev>",
+        "to": [EMAIL_DESTINO],
         "subject": assunto,
-        "content": [{"type": "text/html", "value": html_body}]
+        "html": html_body
     }
     response = requests.post(
-        "https://api.sendgrid.com/v3/mail/send",
-        headers={"Authorization": f"Bearer {SENDGRID_API_KEY}", "Content-Type": "application/json"},
+        "https://api.resend.com/emails",
+        headers={"Authorization": f"Bearer {RESEND_API_KEY}", "Content-Type": "application/json"},
         json=payload, timeout=15
     )
-    if response.status_code in (200, 202):
+    if response.status_code in (200, 201):
         print(f"Email enviado com sucesso para {EMAIL_DESTINO}")
         return True
     else:
