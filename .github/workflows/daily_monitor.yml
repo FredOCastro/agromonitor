@@ -39,10 +39,9 @@ jobs:
       - name: Enviar alerta se necessário
         run: python src/send_alert.py
         env:
-          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-          EMAIL_DESTINO:    ${{ secrets.EMAIL_DESTINO }}
-          EMAIL_REMETENTE:  ${{ secrets.EMAIL_REMETENTE }}
-
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_DESTINO:  ${{ secrets.EMAIL_DESTINO }}
+          
       - name: Salvar arquivos atualizados no repositório
         run: |
           git config user.name "Agro Monitor Bot"
