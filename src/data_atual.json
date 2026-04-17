@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-17T14:22:43.919073",
-  "data_coleta": "17/04/2026 14:22",
+  "timestamp": "2026-04-17T14:31:30.445793",
+  "data_coleta": "17/04/2026 14:31",
   "cambio": {
     "usd_brl": 5.0007,
     "data": "04-16-2026",
@@ -16,8 +16,8 @@
   },
   "precos": {
     "soja_cbot": {
-      "preco_usd_bushel": 11.57,
-      "preco_brl_saca": 127.29,
+      "preco_usd_bushel": 11.56,
+      "preco_brl_saca": 127.18,
       "ticker": "ZSK26.CBT"
     },
     "milho_cbot": {
@@ -32,12 +32,12 @@
     },
     "soja_futuros": {
       "Mai/26": {
-        "usd_bu": 11.57,
-        "brl_sc": 127.29
+        "usd_bu": 11.56,
+        "brl_sc": 127.18
       },
       "Jul/26": {
-        "usd_bu": 11.74,
-        "brl_sc": 129.16
+        "usd_bu": 11.73,
+        "brl_sc": 129.05
       },
       "Set/26": {
         "usd_bu": 11.45,
@@ -122,7 +122,7 @@
       },
       {
         "data": "Apr/26",
-        "preco": 1157.25
+        "preco": 1156.5
       }
     ],
     "hist_milho": [
@@ -228,14 +228,14 @@
   },
   "pracas": {
     "soja": {
-      "Paranagua": 143.29,
-      "Rondonopolis": 136.19,
-      "Rio Verde": 134.59,
-      "Cascavel": 138.99,
-      "Uberlandia": 132.29,
-      "Passo Fundo": 140.59,
-      "Barreiras": 133.79,
-      "Sorriso": 135.09
+      "Paranagua": 143.18,
+      "Rondonopolis": 136.08,
+      "Rio Verde": 134.48,
+      "Cascavel": 138.88,
+      "Uberlandia": 132.18,
+      "Passo Fundo": 140.48,
+      "Barreiras": 133.68,
+      "Sorriso": 134.98
     },
     "milho": {
       "Campinas": 57.9,
@@ -251,7 +251,7 @@
       "Barreiras": 129.04,
       "Primavera": 126.94
     },
-    "ref_soja_paranagua": 143.29,
+    "ref_soja_paranagua": 143.18,
     "ref_milho_campinas": 57.9,
     "ref_algodao_br": 130.74
   },
@@ -749,14 +749,14 @@
       "glifosato_l": 18.9,
       "diesel_l": 6.18
     },
-    "soja_paranagua": 135.29000000000002,
+    "soja_paranagua": 135.18,
     "milho_campinas": 55.14600000000001,
     "algodao_br": 130.74,
     "relacao_soja": {
-      "ureia_sc_ton": 2.48,
+      "ureia_sc_ton": 2.49,
       "map_sc_ton": 3.13,
       "kcl_sc_ton": 1.83,
-      "ssp_sc_ton": 2.76,
+      "ssp_sc_ton": 2.77,
       "glifosato_sc_l": 0.14,
       "diesel_sc_l": 0.05
     },
