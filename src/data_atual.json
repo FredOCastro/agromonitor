@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-17T14:04:30.045370",
-  "data_coleta": "17/04/2026 14:04",
+  "timestamp": "2026-04-17T14:22:43.919073",
+  "data_coleta": "17/04/2026 14:22",
   "cambio": {
     "usd_brl": 5.0007,
     "data": "04-16-2026",
@@ -16,13 +16,13 @@
   },
   "precos": {
     "soja_cbot": {
-      "preco_usd_bushel": 11.55,
-      "preco_brl_saca": 127.07,
+      "preco_usd_bushel": 11.57,
+      "preco_brl_saca": 127.29,
       "ticker": "ZSK26.CBT"
     },
     "milho_cbot": {
-      "preco_usd_bushel": 4.46,
-      "preco_brl_saca": 52.64,
+      "preco_usd_bushel": 4.45,
+      "preco_brl_saca": 52.52,
       "ticker": "ZCK26.CBT"
     },
     "algodao_ice": {
@@ -32,42 +32,42 @@
     },
     "soja_futuros": {
       "Mai/26": {
-        "usd_bu": 11.55,
-        "brl_sc": 127.07
+        "usd_bu": 11.57,
+        "brl_sc": 127.29
       },
       "Jul/26": {
-        "usd_bu": 11.71,
-        "brl_sc": 128.83
+        "usd_bu": 11.74,
+        "brl_sc": 129.16
       },
       "Set/26": {
-        "usd_bu": 11.44,
-        "brl_sc": 125.86
+        "usd_bu": 11.45,
+        "brl_sc": 125.97
       },
       "Nov/26": {
-        "usd_bu": 11.48,
-        "brl_sc": 126.3
+        "usd_bu": 11.49,
+        "brl_sc": 126.41
       },
       "Jan/27": {
-        "usd_bu": 11.61,
-        "brl_sc": 127.73
+        "usd_bu": 11.62,
+        "brl_sc": 127.84
       }
     },
     "milho_futuros": {
       "Mai/26": {
-        "usd_bu": 4.46,
-        "brl_sc": 52.64
+        "usd_bu": 4.45,
+        "brl_sc": 52.52
       },
       "Jul/26": {
-        "usd_bu": 4.54,
-        "brl_sc": 53.58
+        "usd_bu": 4.53,
+        "brl_sc": 53.46
       },
       "Set/26": {
-        "usd_bu": 4.58,
-        "brl_sc": 54.05
+        "usd_bu": 4.57,
+        "brl_sc": 53.93
       },
       "Dez/26": {
-        "usd_bu": 4.74,
-        "brl_sc": 55.94
+        "usd_bu": 4.73,
+        "brl_sc": 55.82
       },
       "Mar/27": {
         "usd_bu": 4.87,
@@ -122,7 +122,7 @@
       },
       {
         "data": "Apr/26",
-        "preco": 1155.25
+        "preco": 1157.25
       }
     ],
     "hist_milho": [
@@ -172,7 +172,7 @@
       },
       {
         "data": "Apr/26",
-        "preco": 454.5
+        "preco": 453.25
       }
     ],
     "hist_algodao": [
@@ -228,22 +228,22 @@
   },
   "pracas": {
     "soja": {
-      "Paranagua": 143.07,
-      "Rondonopolis": 135.97,
-      "Rio Verde": 134.37,
-      "Cascavel": 138.77,
-      "Uberlandia": 132.07,
-      "Passo Fundo": 140.37,
-      "Barreiras": 133.57,
-      "Sorriso": 134.87
+      "Paranagua": 143.29,
+      "Rondonopolis": 136.19,
+      "Rio Verde": 134.59,
+      "Cascavel": 138.99,
+      "Uberlandia": 132.29,
+      "Passo Fundo": 140.59,
+      "Barreiras": 133.79,
+      "Sorriso": 135.09
     },
     "milho": {
-      "Campinas": 58.04,
-      "Rondonopolis": 50.84,
-      "Rio Verde": 49.44,
-      "Cascavel": 53.14,
-      "Uberlandia": 51.64,
-      "Maringa": 54.24
+      "Campinas": 57.9,
+      "Rondonopolis": 50.7,
+      "Rio Verde": 49.3,
+      "Cascavel": 53.0,
+      "Uberlandia": 51.5,
+      "Maringa": 54.1
     },
     "algodao": {
       "CEPEA BR": 130.74,
@@ -251,8 +251,8 @@
       "Barreiras": 129.04,
       "Primavera": 126.94
     },
-    "ref_soja_paranagua": 143.07,
-    "ref_milho_campinas": 58.04,
+    "ref_soja_paranagua": 143.29,
+    "ref_milho_campinas": 57.9,
     "ref_algodao_br": 130.74
   },
   "clima_estados": {
@@ -749,21 +749,21 @@
       "glifosato_l": 18.9,
       "diesel_l": 6.18
     },
-    "soja_paranagua": 135.07,
-    "milho_campinas": 55.272000000000006,
+    "soja_paranagua": 135.29000000000002,
+    "milho_campinas": 55.14600000000001,
     "algodao_br": 130.74,
     "relacao_soja": {
-      "ureia_sc_ton": 2.49,
+      "ureia_sc_ton": 2.48,
       "map_sc_ton": 3.13,
       "kcl_sc_ton": 1.83,
-      "ssp_sc_ton": 2.77,
+      "ssp_sc_ton": 2.76,
       "glifosato_sc_l": 0.14,
       "diesel_sc_l": 0.05
     },
     "relacao_milho": {
-      "ureia_sc_ton": 6.08,
-      "map_sc_ton": 7.65,
-      "kcl_sc_ton": 4.47
+      "ureia_sc_ton": 6.09,
+      "map_sc_ton": 7.67,
+      "kcl_sc_ton": 4.48
     },
     "relacao_algodao": {
       "ureia_arr_ton": 2.57,
