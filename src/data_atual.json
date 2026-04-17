@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-17T13:42:47.905665",
-  "data_coleta": "17/04/2026 13:42",
+  "timestamp": "2026-04-17T13:58:50.427349",
+  "data_coleta": "17/04/2026 13:58",
   "cambio": {
     "usd_brl": 5.0007,
     "data": "04-16-2026",
@@ -21,8 +21,8 @@
       "ticker": "ZSK26.CBT"
     },
     "milho_cbot": {
-      "preco_usd_bushel": 4.45,
-      "preco_brl_saca": 52.52,
+      "preco_usd_bushel": 4.46,
+      "preco_brl_saca": 52.64,
       "ticker": "ZCK26.CBT"
     },
     "algodao_ice": {
@@ -44,8 +44,8 @@
         "brl_sc": 125.64
       },
       "Nov/26": {
-        "usd_bu": 11.46,
-        "brl_sc": 126.08
+        "usd_bu": 11.47,
+        "brl_sc": 126.19
       },
       "Jan/27": {
         "usd_bu": 11.59,
@@ -54,24 +54,24 @@
     },
     "milho_futuros": {
       "Mai/26": {
-        "usd_bu": 4.45,
-        "brl_sc": 52.52
+        "usd_bu": 4.46,
+        "brl_sc": 52.64
       },
       "Jul/26": {
-        "usd_bu": 4.54,
-        "brl_sc": 53.58
+        "usd_bu": 4.55,
+        "brl_sc": 53.7
       },
       "Set/26": {
-        "usd_bu": 4.57,
-        "brl_sc": 53.93
+        "usd_bu": 4.58,
+        "brl_sc": 54.05
       },
       "Dez/26": {
-        "usd_bu": 4.72,
-        "brl_sc": 55.7
+        "usd_bu": 4.74,
+        "brl_sc": 55.94
       },
       "Mar/27": {
-        "usd_bu": 4.85,
-        "brl_sc": 57.24
+        "usd_bu": 4.88,
+        "brl_sc": 57.59
       }
     },
     "cambio_usd_brl": 5.0007,
@@ -127,10 +127,6 @@
     ],
     "hist_milho": [
       {
-        "data": "Jan/26",
-        "preco": 428.25
-      },
-      {
         "data": "Feb/26",
         "preco": 430.25
       },
@@ -173,6 +169,10 @@
       {
         "data": "Apr/26",
         "preco": 448.5
+      },
+      {
+        "data": "Apr/26",
+        "preco": 455.0
       }
     ],
     "hist_algodao": [
@@ -238,12 +238,12 @@
       "Sorriso": 134.76
     },
     "milho": {
-      "Campinas": 57.9,
-      "Rondonopolis": 50.7,
-      "Rio Verde": 49.3,
-      "Cascavel": 53.0,
-      "Uberlandia": 51.5,
-      "Maringa": 54.1
+      "Campinas": 58.04,
+      "Rondonopolis": 50.84,
+      "Rio Verde": 49.44,
+      "Cascavel": 53.14,
+      "Uberlandia": 51.64,
+      "Maringa": 54.24
     },
     "algodao": {
       "CEPEA BR": 130.74,
@@ -252,7 +252,7 @@
       "Primavera": 126.94
     },
     "ref_soja_paranagua": 142.96,
-    "ref_milho_campinas": 57.9,
+    "ref_milho_campinas": 58.04,
     "ref_algodao_br": 130.74
   },
   "clima_estados": {
@@ -750,7 +750,7 @@
       "diesel_l": 6.18
     },
     "soja_paranagua": 134.95999999999998,
-    "milho_campinas": 55.14600000000001,
+    "milho_campinas": 55.272000000000006,
     "algodao_br": 130.74,
     "relacao_soja": {
       "ureia_sc_ton": 2.49,
@@ -761,9 +761,9 @@
       "diesel_sc_l": 0.05
     },
     "relacao_milho": {
-      "ureia_sc_ton": 6.09,
-      "map_sc_ton": 7.67,
-      "kcl_sc_ton": 4.48
+      "ureia_sc_ton": 6.08,
+      "map_sc_ton": 7.65,
+      "kcl_sc_ton": 4.47
     },
     "relacao_algodao": {
       "ureia_arr_ton": 2.57,
