@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-16T18:34:14.950674",
-  "data_coleta": "16/04/2026 18:34",
+  "timestamp": "2026-04-17T12:11:45.603537",
+  "data_coleta": "17/04/2026 12:11",
   "enso": {
     "oni_atual": 26.57,
     "oni_anterior": 26.13,
@@ -13,42 +13,42 @@
     "Araxá": {
       "precip_7d_mm": 0,
       "precip_14d_mm": 0,
-      "temp_max_semana": 28.9,
-      "temp_min_semana": 15.3,
+      "temp_max_semana": 28.5,
+      "temp_min_semana": 15.6,
       "alerta_seca": true,
       "alerta_excesso": false
     },
     "Ibiá": {
       "precip_7d_mm": 0,
       "precip_14d_mm": 0,
-      "temp_max_semana": 30.0,
-      "temp_min_semana": 12.4,
+      "temp_max_semana": 29.9,
+      "temp_min_semana": 14.0,
       "alerta_seca": true,
       "alerta_excesso": false
     },
     "Perdizes": {
       "precip_7d_mm": 0,
       "precip_14d_mm": 0,
-      "temp_max_semana": 27.5,
-      "temp_min_semana": 14.0,
+      "temp_max_semana": 26.7,
+      "temp_min_semana": 15.1,
       "alerta_seca": true,
       "alerta_excesso": false
     },
     "Tapira": {
       "precip_7d_mm": 0,
       "precip_14d_mm": 0,
-      "temp_max_semana": 29.0,
-      "temp_min_semana": 13.1,
+      "temp_max_semana": 28.9,
+      "temp_min_semana": 14.6,
       "alerta_seca": true,
       "alerta_excesso": false
     }
   },
   "precos": {
     "soja_cbot": {
-      "preco_usd_bushel": 11.62,
+      "preco_usd_bushel": 11.6,
       "ticker": "ZS=F",
       "moeda": "USD/bushel",
-      "preco_brl_saca": 127.84
+      "preco_brl_saca": 127.62
     },
     "milho_cbot": {
       "preco_usd_bushel": 4.58,
