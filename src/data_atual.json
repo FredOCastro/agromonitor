@@ -1,105 +1,776 @@
 {
-  "timestamp": "2026-04-17T12:11:45.603537",
-  "data_coleta": "17/04/2026 12:11",
+  "timestamp": "2026-04-17T13:34:18.937936",
+  "data_coleta": "17/04/2026 13:34",
+  "cambio": {
+    "usd_brl": 5.0007,
+    "data": "04-16-2026",
+    "fonte": "BCB"
+  },
   "enso": {
     "oni_atual": 26.57,
     "oni_anterior": 26.13,
     "periodo": "JFM",
-    "status": "El Niño Forte",
+    "status": "El Nino Forte",
     "tendencia": "subindo",
     "fonte": "NOAA CPC"
   },
-  "clima": {
-    "Araxá": {
-      "precip_7d_mm": 0,
-      "precip_14d_mm": 0,
-      "temp_max_semana": 28.5,
-      "temp_min_semana": 15.6,
+  "precos": {
+    "soja_cbot": {
+      "preco_usd_bushel": 11.59,
+      "preco_brl_saca": 127.51,
+      "ticker": "ZSK26.CBT"
+    },
+    "milho_cbot": {
+      "preco_usd_bushel": 4.48,
+      "preco_brl_saca": 52.87,
+      "ticker": "ZCK26.CBT"
+    },
+    "algodao_ice": {
+      "preco_usd_lb": 0.7906,
+      "preco_brl_arroba": 130.74,
+      "ticker": "CT=F"
+    },
+    "soja_futuros": {
+      "Mai/26": {
+        "usd_bu": 11.59,
+        "brl_sc": 127.51
+      },
+      "Jul/26": {
+        "usd_bu": 11.76,
+        "brl_sc": 129.38
+      },
+      "Set/26": {
+        "usd_bu": 11.47,
+        "brl_sc": 126.19
+      },
+      "Nov/26": {
+        "usd_bu": 11.52,
+        "brl_sc": 126.74
+      },
+      "Jan/27": {
+        "usd_bu": 11.64,
+        "brl_sc": 128.06
+      }
+    },
+    "milho_futuros": {
+      "Mai/26": {
+        "usd_bu": 4.48,
+        "brl_sc": 52.87
+      },
+      "Jul/26": {
+        "usd_bu": 4.57,
+        "brl_sc": 53.93
+      },
+      "Set/26": {
+        "usd_bu": 4.6,
+        "brl_sc": 54.29
+      },
+      "Dez/26": {
+        "usd_bu": 4.75,
+        "brl_sc": 56.06
+      },
+      "Mar/27": {
+        "usd_bu": 4.89,
+        "brl_sc": 57.71
+      }
+    },
+    "cambio_usd_brl": 5.0007,
+    "hist_soja": [
+      {
+        "data": "Feb/26",
+        "preco": 1115.25
+      },
+      {
+        "data": "Feb/26",
+        "preco": 1133.0
+      },
+      {
+        "data": "Feb/26",
+        "preco": 1137.5
+      },
+      {
+        "data": "Feb/26",
+        "preco": 1157.25
+      },
+      {
+        "data": "Mar/26",
+        "preco": 1185.0
+      },
+      {
+        "data": "Mar/26",
+        "preco": 1211.0
+      },
+      {
+        "data": "Mar/26",
+        "preco": 1161.25
+      },
+      {
+        "data": "Mar/26",
+        "preco": 1159.25
+      },
+      {
+        "data": "Mar/26",
+        "preco": 1163.5
+      },
+      {
+        "data": "Apr/26",
+        "preco": 1175.75
+      },
+      {
+        "data": "Apr/26",
+        "preco": 1163.75
+      },
+      {
+        "data": "Apr/26",
+        "preco": 1158.5
+      }
+    ],
+    "hist_milho": [
+      {
+        "data": "Feb/26",
+        "preco": 430.25
+      },
+      {
+        "data": "Feb/26",
+        "preco": 431.75
+      },
+      {
+        "data": "Feb/26",
+        "preco": 427.5
+      },
+      {
+        "data": "Feb/26",
+        "preco": 438.75
+      },
+      {
+        "data": "Mar/26",
+        "preco": 447.0
+      },
+      {
+        "data": "Mar/26",
+        "preco": 452.5
+      },
+      {
+        "data": "Mar/26",
+        "preco": 465.5
+      },
+      {
+        "data": "Mar/26",
+        "preco": 462.0
+      },
+      {
+        "data": "Mar/26",
+        "preco": 452.25
+      },
+      {
+        "data": "Apr/26",
+        "preco": 441.0
+      },
+      {
+        "data": "Apr/26",
+        "preco": 448.5
+      },
+      {
+        "data": "Apr/26",
+        "preco": 456.75
+      }
+    ],
+    "hist_algodao": [
+      {
+        "data": "Feb/26",
+        "preco": 61.06
+      },
+      {
+        "data": "Feb/26",
+        "preco": 62.11
+      },
+      {
+        "data": "Feb/26",
+        "preco": 63.03
+      },
+      {
+        "data": "Feb/26",
+        "preco": 63.61
+      },
+      {
+        "data": "Mar/26",
+        "preco": 63.19
+      },
+      {
+        "data": "Mar/26",
+        "preco": 65.85
+      },
+      {
+        "data": "Mar/26",
+        "preco": 67.31
+      },
+      {
+        "data": "Mar/26",
+        "preco": 69.46
+      },
+      {
+        "data": "Mar/26",
+        "preco": 70.92
+      },
+      {
+        "data": "Apr/26",
+        "preco": 73.22
+      },
+      {
+        "data": "Apr/26",
+        "preco": 75.7
+      },
+      {
+        "data": "Apr/26",
+        "preco": 79.06
+      }
+    ]
+  },
+  "pracas": {
+    "soja": {
+      "Paranagua": 143.51,
+      "Rondonopolis": 136.41,
+      "Rio Verde": 134.81,
+      "Cascavel": 139.21,
+      "Uberlandia": 132.51,
+      "Passo Fundo": 140.81,
+      "Barreiras": 134.01,
+      "Sorriso": 135.31
+    },
+    "milho": {
+      "Campinas": 58.29,
+      "Rondonopolis": 51.09,
+      "Rio Verde": 49.69,
+      "Cascavel": 53.39,
+      "Uberlandia": 51.89,
+      "Maringa": 54.49
+    },
+    "algodao": {
+      "CEPEA BR": 130.74,
+      "Cuiaba": 128.34,
+      "Barreiras": 129.04,
+      "Primavera": 126.94
+    },
+    "ref_soja_paranagua": 143.51,
+    "ref_milho_campinas": 58.29,
+    "ref_algodao_br": 130.74
+  },
+  "clima_estados": {
+    "MT": {
+      "nome": "Mato Grosso (Sorriso)",
+      "precip_7d_mm": 24.4,
+      "precip_14d_mm": 33.1,
+      "temp_max": 32.3,
+      "temp_min": 21.7,
+      "alerta_seca": false,
+      "alerta_excesso": false
+    },
+    "GO": {
+      "nome": "Goias (Rio Verde)",
+      "precip_7d_mm": 0.1,
+      "precip_14d_mm": 0.1,
+      "temp_max": 31.3,
+      "temp_min": 17.9,
       "alerta_seca": true,
       "alerta_excesso": false
     },
-    "Ibiá": {
-      "precip_7d_mm": 0,
-      "precip_14d_mm": 0,
-      "temp_max_semana": 29.9,
-      "temp_min_semana": 14.0,
+    "MS": {
+      "nome": "Mato Grosso do Sul",
+      "precip_7d_mm": 2.0,
+      "precip_14d_mm": 2.0,
+      "temp_max": 33.6,
+      "temp_min": 21.1,
       "alerta_seca": true,
       "alerta_excesso": false
     },
-    "Perdizes": {
+    "MG": {
+      "nome": "Minas Gerais (Araxa)",
       "precip_7d_mm": 0,
       "precip_14d_mm": 0,
-      "temp_max_semana": 26.7,
-      "temp_min_semana": 15.1,
+      "temp_max": 28.7,
+      "temp_min": 15.7,
       "alerta_seca": true,
       "alerta_excesso": false
     },
-    "Tapira": {
-      "precip_7d_mm": 0,
-      "precip_14d_mm": 0,
-      "temp_max_semana": 28.9,
-      "temp_min_semana": 14.6,
+    "PR": {
+      "nome": "Parana (Cascavel)",
+      "precip_7d_mm": 11.8,
+      "precip_14d_mm": 25.6,
+      "temp_max": 28.2,
+      "temp_min": 14.8,
+      "alerta_seca": false,
+      "alerta_excesso": false
+    },
+    "RS": {
+      "nome": "Rio Grande do Sul",
+      "precip_7d_mm": 60.9,
+      "precip_14d_mm": 112.0,
+      "temp_max": 28.0,
+      "temp_min": 12.6,
+      "alerta_seca": false,
+      "alerta_excesso": false
+    },
+    "BA": {
+      "nome": "Bahia (Barreiras)",
+      "precip_7d_mm": 5.9,
+      "precip_14d_mm": 8.3,
+      "temp_max": 32.5,
+      "temp_min": 20.3,
       "alerta_seca": true,
+      "alerta_excesso": false
+    },
+    "MA": {
+      "nome": "Maranhao (Balsas)",
+      "precip_7d_mm": 60.8,
+      "precip_14d_mm": 80.3,
+      "temp_max": 31.6,
+      "temp_min": 23.4,
+      "alerta_seca": false,
       "alerta_excesso": false
     }
   },
-  "precos": {
-    "soja_cbot": {
-      "preco_usd_bushel": 11.6,
-      "ticker": "ZS=F",
-      "moeda": "USD/bushel",
-      "preco_brl_saca": 127.62
-    },
-    "milho_cbot": {
-      "preco_usd_bushel": 4.58,
-      "ticker": "ZC=F",
-      "moeda": "USD/bushel",
-      "preco_brl_saca": 54.05
-    },
-    "cambio_usd_brl": 5.0007
-  },
   "safras": {
-    "soja_mundial_mt": {
-      "Brasil": {
-        "producao": 167,
-        "variacao_pct": 2
-      },
-      "EUA": {
-        "producao": 121,
-        "variacao_pct": 1
-      },
-      "Argentina": {
-        "producao": 52,
-        "variacao_pct": -5
-      },
-      "China": {
-        "producao": 21,
-        "variacao_pct": -1
+    "referencia": "CONAB Abril/2026 + IMEA",
+    "proxima_atualizacao": "Maio/2026",
+    "soja_br": {
+      "area_mha": 45.8,
+      "producao_mt": 167.0,
+      "produtividade_kgha": 3647,
+      "colheita_pct": 94,
+      "vs_safra_anterior_pct": 2.0,
+      "por_estado": {
+        "MT": {
+          "area": 12.1,
+          "prod": 43.8,
+          "produt": 3620,
+          "colheita": 98,
+          "var": 3
+        },
+        "PR": {
+          "area": 5.8,
+          "prod": 22.1,
+          "produt": 3810,
+          "colheita": 97,
+          "var": 2
+        },
+        "RS": {
+          "area": 6.7,
+          "prod": 22.4,
+          "produt": 3343,
+          "colheita": 92,
+          "var": -3
+        },
+        "GO": {
+          "area": 4.2,
+          "prod": 15.2,
+          "produt": 3619,
+          "colheita": 95,
+          "var": 1
+        },
+        "MS": {
+          "area": 3.2,
+          "prod": 11.1,
+          "produt": 3469,
+          "colheita": 99,
+          "var": 2
+        },
+        "MG": {
+          "area": 1.7,
+          "prod": 5.8,
+          "produt": 3412,
+          "colheita": 88,
+          "var": -2
+        },
+        "MATOPIBA": {
+          "area": 6.8,
+          "prod": 24.6,
+          "produt": 3618,
+          "colheita": 89,
+          "var": 4
+        }
       }
     },
-    "milho_mundial_mt": {
-      "EUA": {
-        "producao": 394,
-        "variacao_pct": 3
-      },
-      "China": {
-        "producao": 298,
-        "variacao_pct": 0
-      },
-      "Brasil": {
-        "producao": 137,
-        "variacao_pct": -8
-      },
-      "Argentina": {
-        "producao": 50,
-        "variacao_pct": -4
-      },
-      "Ucrânia": {
-        "producao": 24,
-        "variacao_pct": -12
+    "milho_br": {
+      "area_mha": 22.4,
+      "producao_mt": 137.0,
+      "produtividade_kgha": 6116,
+      "colheita_2a_pct": 68,
+      "vs_safra_anterior_pct": -8.0,
+      "por_estado": {
+        "MT": {
+          "prod_1a": 2.8,
+          "prod_2a": 33.2,
+          "total": 36.0,
+          "colheita_2a": 72,
+          "var": -9
+        },
+        "PR": {
+          "prod_1a": 8.4,
+          "prod_2a": 11.2,
+          "total": 19.6,
+          "colheita_2a": 61,
+          "var": -4
+        },
+        "GO": {
+          "prod_1a": 1.2,
+          "prod_2a": 13.8,
+          "total": 15.0,
+          "colheita_2a": 65,
+          "var": -7
+        },
+        "MS": {
+          "prod_1a": 0.8,
+          "prod_2a": 9.4,
+          "total": 10.2,
+          "colheita_2a": 70,
+          "var": -5
+        },
+        "MG": {
+          "prod_1a": 3.2,
+          "prod_2a": 7.1,
+          "total": 10.3,
+          "colheita_2a": 58,
+          "var": -8
+        }
       }
     },
-    "referencia": "USDA WASDE Abril 2026",
-    "proxima_atualizacao": "Maio 2026"
+    "algodao_br": {
+      "area_mha": 2.54,
+      "producao_mfardos": 17.78,
+      "produtividade_arrha": 210,
+      "colheita_pct": 72,
+      "vs_safra_anterior_pct": 3.0,
+      "por_estado": {
+        "MT": {
+          "area": 1.18,
+          "prod": 8.92,
+          "produt": 228,
+          "colheita": 78,
+          "var": 3
+        },
+        "BA": {
+          "area": 0.82,
+          "prod": 5.12,
+          "produt": 187,
+          "colheita": 65,
+          "var": 2
+        },
+        "GO": {
+          "area": 0.28,
+          "prod": 1.98,
+          "produt": 212,
+          "colheita": 71,
+          "var": 4
+        },
+        "MS": {
+          "area": 0.18,
+          "prod": 1.24,
+          "produt": 207,
+          "colheita": 82,
+          "var": 0
+        },
+        "MA": {
+          "area": 0.08,
+          "prod": 0.52,
+          "produt": 195,
+          "colheita": 58,
+          "var": 5
+        }
+      }
+    },
+    "mundial": {
+      "soja_mt": {
+        "Brasil": {
+          "prod_2324": 153,
+          "prod_2425": 163,
+          "prod_2526": 167,
+          "proj_2627": 155
+        },
+        "EUA": {
+          "prod_2324": 113,
+          "prod_2425": 120,
+          "prod_2526": 121,
+          "proj_2627": 122
+        },
+        "Argentina": {
+          "prod_2324": 48,
+          "prod_2425": 50,
+          "prod_2526": 52,
+          "proj_2627": 50
+        },
+        "China": {
+          "prod_2324": 21,
+          "prod_2425": 21,
+          "prod_2526": 21,
+          "proj_2627": 22
+        },
+        "Mundo": {
+          "prod_2324": 396,
+          "prod_2425": 421,
+          "prod_2526": 426,
+          "proj_2627": 412
+        }
+      },
+      "milho_mt": {
+        "EUA": {
+          "prod_2324": 390,
+          "prod_2425": 382,
+          "prod_2526": 394,
+          "proj_2627": 390
+        },
+        "China": {
+          "prod_2324": 277,
+          "prod_2425": 295,
+          "prod_2526": 298,
+          "proj_2627": 300
+        },
+        "Brasil": {
+          "prod_2324": 127,
+          "prod_2425": 149,
+          "prod_2526": 137,
+          "proj_2627": 120
+        },
+        "Argentina": {
+          "prod_2324": 55,
+          "prod_2425": 50,
+          "prod_2526": 50,
+          "proj_2627": 46
+        },
+        "Mundo": {
+          "prod_2324": 1234,
+          "prod_2425": 1226,
+          "prod_2526": 1241,
+          "proj_2627": 1220
+        }
+      },
+      "algodao_mf": {
+        "China": {
+          "prod_2324": 27.4,
+          "prod_2425": 28.0,
+          "prod_2526": 28.5,
+          "proj_2627": 28.0
+        },
+        "India": {
+          "prod_2324": 24.5,
+          "prod_2425": 23.5,
+          "prod_2526": 23.0,
+          "proj_2627": 23.5
+        },
+        "EUA": {
+          "prod_2324": 12.5,
+          "prod_2425": 14.3,
+          "prod_2526": 15.0,
+          "proj_2627": 14.5
+        },
+        "Brasil": {
+          "prod_2324": 16.8,
+          "prod_2425": 17.2,
+          "prod_2526": 17.8,
+          "proj_2627": 16.5
+        },
+        "Mundo": {
+          "prod_2324": 114,
+          "prod_2425": 117,
+          "prod_2526": 120,
+          "proj_2627": 117
+        }
+      },
+      "estoques": {
+        "soja": [
+          {
+            "safra": "23/24",
+            "prod": 396,
+            "cons": 371,
+            "est": 114,
+            "eu": 30.7
+          },
+          {
+            "safra": "24/25",
+            "prod": 421,
+            "cons": 385,
+            "est": 124,
+            "eu": 32.2
+          },
+          {
+            "safra": "25/26",
+            "prod": 426,
+            "cons": 392,
+            "est": 128,
+            "eu": 32.7
+          },
+          {
+            "safra": "26/27*",
+            "prod": 412,
+            "cons": 398,
+            "est": 112,
+            "eu": 28.1
+          }
+        ],
+        "milho": [
+          {
+            "safra": "23/24",
+            "prod": 1234,
+            "cons": 1211,
+            "est": 319,
+            "eu": 26.4
+          },
+          {
+            "safra": "24/25",
+            "prod": 1226,
+            "cons": 1228,
+            "est": 317,
+            "eu": 25.8
+          },
+          {
+            "safra": "25/26",
+            "prod": 1241,
+            "cons": 1235,
+            "est": 322,
+            "eu": 26.1
+          },
+          {
+            "safra": "26/27*",
+            "prod": 1220,
+            "cons": 1240,
+            "est": 302,
+            "eu": 24.4
+          }
+        ],
+        "algodao": [
+          {
+            "safra": "23/24",
+            "prod": 113.8,
+            "cons": 111.2,
+            "est": 83.4,
+            "eu": 75.0
+          },
+          {
+            "safra": "24/25",
+            "prod": 117.4,
+            "cons": 113.5,
+            "est": 87.3,
+            "eu": 76.9
+          },
+          {
+            "safra": "25/26",
+            "prod": 120.1,
+            "cons": 115.8,
+            "est": 91.6,
+            "eu": 79.1
+          },
+          {
+            "safra": "26/27*",
+            "prod": 117.0,
+            "cons": 116.5,
+            "est": 88.0,
+            "eu": 75.5
+          }
+        ]
+      }
+    }
+  },
+  "frete": {
+    "rotas": [
+      {
+        "origem": "Sorriso MT",
+        "destino": "Paranagua PR",
+        "modal": "rodoviario",
+        "valor": 248,
+        "var_pct": 3.2
+      },
+      {
+        "origem": "Rondonopolis MT",
+        "destino": "Santos SP",
+        "modal": "rodoviario",
+        "valor": 218,
+        "var_pct": 3.2
+      },
+      {
+        "origem": "Rio Verde GO",
+        "destino": "Santos SP",
+        "modal": "rodoviario",
+        "valor": 144,
+        "var_pct": 2.8
+      },
+      {
+        "origem": "Rio Verde GO",
+        "destino": "Paranagua PR",
+        "modal": "rodoviario",
+        "valor": 154,
+        "var_pct": 3.0
+      },
+      {
+        "origem": "Uberlandia MG",
+        "destino": "Santos SP",
+        "modal": "rodoviario",
+        "valor": 94,
+        "var_pct": 2.5
+      },
+      {
+        "origem": "Barreiras BA",
+        "destino": "Santos SP",
+        "modal": "rodoviario",
+        "valor": 178,
+        "var_pct": 3.5
+      },
+      {
+        "origem": "Cascavel PR",
+        "destino": "Paranagua PR",
+        "modal": "rodoviario",
+        "valor": 54,
+        "var_pct": 2.1
+      },
+      {
+        "origem": "MT/GO",
+        "destino": "Santos SP",
+        "modal": "ferrovia VLI",
+        "valor": 124,
+        "var_pct": 1.8
+      },
+      {
+        "origem": "Rondonopolis MT",
+        "destino": "Santos SP",
+        "modal": "ferrovia Rumo",
+        "valor": 108,
+        "var_pct": 1.5
+      }
+    ],
+    "diesel_rl": 6.18,
+    "reajuste_antt_pct": 3.2,
+    "data_ref": "Abril/2026",
+    "fonte": "ANTT/IMEA"
+  },
+  "relacao_troca": {
+    "precos_insumos": {
+      "ureia_ton": 336.0,
+      "map_ton": 423.0,
+      "kcl_ton": 247.0,
+      "ssp_ton": 374.0,
+      "glifosato_l": 18.9,
+      "diesel_l": 6.18
+    },
+    "soja_paranagua": 135.51,
+    "milho_campinas": 55.5135,
+    "algodao_br": 130.74,
+    "relacao_soja": {
+      "ureia_sc_ton": 2.48,
+      "map_sc_ton": 3.12,
+      "kcl_sc_ton": 1.82,
+      "ssp_sc_ton": 2.76,
+      "glifosato_sc_l": 0.14,
+      "diesel_sc_l": 0.05
+    },
+    "relacao_milho": {
+      "ureia_sc_ton": 6.05,
+      "map_sc_ton": 7.62,
+      "kcl_sc_ton": 4.45
+    },
+    "relacao_algodao": {
+      "ureia_arr_ton": 2.57,
+      "map_arr_ton": 3.24,
+      "kcl_arr_ton": 1.89
+    },
+    "fonte": "ANDA/CEPEA - Atualizar mensalmente",
+    "data_ref": "04/2026"
   }
 }
