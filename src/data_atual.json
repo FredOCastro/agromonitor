@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-19T11:52:22.833441",
-  "data_coleta": "19/04/2026 11:52",
+  "timestamp": "2026-04-20T15:05:55.154709",
+  "data_coleta": "20/04/2026 15:05",
   "cambio": {
     "usd_brl": 4.9695,
     "data": "04-17-2026",
@@ -16,32 +16,32 @@
   },
   "precos": {
     "soja_cbot": {
-      "preco_usd_bushel": 11.67,
-      "preco_brl_saca": 127.59,
+      "preco_usd_bushel": 11.65,
+      "preco_brl_saca": 127.37,
       "ticker": "ZSK26.CBT"
     },
     "milho_cbot": {
-      "preco_usd_bushel": 4.49,
-      "preco_brl_saca": 52.66,
+      "preco_usd_bushel": 4.51,
+      "preco_brl_saca": 52.89,
       "ticker": "ZCK26.CBT"
     },
     "algodao_ice": {
-      "preco_usd_lb": 0.7885,
-      "preco_brl_arroba": 129.58,
+      "preco_usd_lb": 0.7932,
+      "preco_brl_arroba": 130.36,
       "ticker": "CT=F"
     },
     "soja_futuros": {
       "Mai/26": {
-        "usd_bu": 11.67,
-        "brl_sc": 127.59
+        "usd_bu": 11.65,
+        "brl_sc": 127.37
       },
       "Jul/26": {
-        "usd_bu": 11.83,
-        "brl_sc": 129.34
+        "usd_bu": 11.81,
+        "brl_sc": 129.12
       },
       "Set/26": {
-        "usd_bu": 11.52,
-        "brl_sc": 125.95
+        "usd_bu": 11.51,
+        "brl_sc": 125.84
       },
       "Nov/26": {
         "usd_bu": 11.56,
@@ -54,24 +54,24 @@
     },
     "milho_futuros": {
       "Mai/26": {
-        "usd_bu": 4.49,
-        "brl_sc": 52.66
+        "usd_bu": 4.51,
+        "brl_sc": 52.89
       },
       "Jul/26": {
-        "usd_bu": 4.58,
-        "brl_sc": 53.71
+        "usd_bu": 4.6,
+        "brl_sc": 53.95
       },
       "Set/26": {
-        "usd_bu": 4.61,
-        "brl_sc": 54.07
+        "usd_bu": 4.63,
+        "brl_sc": 54.3
       },
       "Dez/26": {
-        "usd_bu": 4.77,
-        "brl_sc": 55.94
+        "usd_bu": 4.79,
+        "brl_sc": 56.18
       },
       "Mar/27": {
-        "usd_bu": 4.91,
-        "brl_sc": 57.58
+        "usd_bu": 4.92,
+        "brl_sc": 57.7
       }
     },
     "cambio_usd_brl": 4.9695,
@@ -122,7 +122,7 @@
       },
       {
         "data": "Apr/26",
-        "preco": 1183.0
+        "preco": 1165.0
       }
     ],
     "hist_milho": [
@@ -172,7 +172,7 @@
       },
       {
         "data": "Apr/26",
-        "preco": 448.75
+        "preco": 460.0
       }
     ],
     "hist_algodao": [
@@ -222,45 +222,45 @@
       },
       {
         "data": "Apr/26",
-        "preco": 78.85
+        "preco": 79.32
       }
     ]
   },
   "pracas": {
     "soja": {
-      "Paranagua": 143.59,
-      "Rondonopolis": 136.49,
-      "Rio Verde": 134.89,
-      "Cascavel": 139.29,
-      "Uberlandia": 132.59,
-      "Passo Fundo": 140.89,
-      "Barreiras": 134.09,
-      "Sorriso": 135.39
+      "Paranagua": 143.37,
+      "Rondonopolis": 136.27,
+      "Rio Verde": 134.67,
+      "Cascavel": 139.07,
+      "Uberlandia": 132.37,
+      "Passo Fundo": 140.67,
+      "Barreiras": 133.87,
+      "Sorriso": 135.17
     },
     "milho": {
-      "Campinas": 58.06,
-      "Rondonopolis": 50.86,
-      "Rio Verde": 49.46,
-      "Cascavel": 53.16,
-      "Uberlandia": 51.66,
-      "Maringa": 54.26
+      "Campinas": 58.31,
+      "Rondonopolis": 51.11,
+      "Rio Verde": 49.71,
+      "Cascavel": 53.41,
+      "Uberlandia": 51.91,
+      "Maringa": 54.51
     },
     "algodao": {
-      "CEPEA BR": 129.58,
-      "Cuiaba": 127.18,
-      "Barreiras": 127.88,
-      "Primavera": 125.78
+      "CEPEA BR": 130.36,
+      "Cuiaba": 127.96,
+      "Barreiras": 128.66,
+      "Primavera": 126.56
     },
-    "ref_soja_paranagua": 143.59,
-    "ref_milho_campinas": 58.06,
-    "ref_algodao_br": 129.58
+    "ref_soja_paranagua": 143.37,
+    "ref_milho_campinas": 58.31,
+    "ref_algodao_br": 130.36
   },
   "clima_estados": {
     "MT": {
       "nome": "Mato Grosso (Sorriso)",
-      "precip_7d_mm": 4.8,
-      "precip_14d_mm": 7.5,
-      "temp_max": 32.6,
+      "precip_7d_mm": 4.2,
+      "precip_14d_mm": 9.6,
+      "temp_max": 32.3,
       "temp_min": 21.8,
       "alerta_seca": true,
       "alerta_excesso": false
@@ -269,17 +269,17 @@
       "nome": "Goias (Rio Verde)",
       "precip_7d_mm": 0,
       "precip_14d_mm": 0,
-      "temp_max": 31.4,
-      "temp_min": 17.0,
+      "temp_max": 32.5,
+      "temp_min": 16.3,
       "alerta_seca": true,
       "alerta_excesso": false
     },
     "MS": {
       "nome": "Mato Grosso do Sul",
-      "precip_7d_mm": 0,
-      "precip_14d_mm": 0,
-      "temp_max": 34.3,
-      "temp_min": 18.9,
+      "precip_7d_mm": 0.8,
+      "precip_14d_mm": 0.8,
+      "temp_max": 33.1,
+      "temp_min": 19.5,
       "alerta_seca": true,
       "alerta_excesso": false
     },
@@ -287,44 +287,44 @@
       "nome": "Minas Gerais (Araxa)",
       "precip_7d_mm": 0,
       "precip_14d_mm": 0,
-      "temp_max": 28.9,
-      "temp_min": 14.9,
+      "temp_max": 29.1,
+      "temp_min": 16.0,
       "alerta_seca": true,
       "alerta_excesso": false
     },
     "PR": {
       "nome": "Parana (Cascavel)",
-      "precip_7d_mm": 0,
-      "precip_14d_mm": 14.1,
-      "temp_max": 29.9,
-      "temp_min": 14.8,
+      "precip_7d_mm": 1.1,
+      "precip_14d_mm": 22.2,
+      "temp_max": 29.2,
+      "temp_min": 16.4,
       "alerta_seca": true,
       "alerta_excesso": false
     },
     "RS": {
       "nome": "Rio Grande do Sul",
-      "precip_7d_mm": 39.8,
-      "precip_14d_mm": 81.7,
-      "temp_max": 29.3,
-      "temp_min": 11.5,
+      "precip_7d_mm": 67.9,
+      "precip_14d_mm": 98.8,
+      "temp_max": 29.1,
+      "temp_min": 14.4,
       "alerta_seca": false,
       "alerta_excesso": false
     },
     "BA": {
       "nome": "Bahia (Barreiras)",
-      "precip_7d_mm": 10.0,
-      "precip_14d_mm": 10.6,
-      "temp_max": 31.7,
-      "temp_min": 19.2,
-      "alerta_seca": false,
+      "precip_7d_mm": 1.3,
+      "precip_14d_mm": 1.6,
+      "temp_max": 32.0,
+      "temp_min": 19.8,
+      "alerta_seca": true,
       "alerta_excesso": false
     },
     "MA": {
       "nome": "Maranhao (Balsas)",
-      "precip_7d_mm": 59.6,
-      "precip_14d_mm": 76.8,
+      "precip_7d_mm": 48.0,
+      "precip_14d_mm": 68.2,
       "temp_max": 31.6,
-      "temp_min": 22.4,
+      "temp_min": 22.6,
       "alerta_seca": false,
       "alerta_excesso": false
     }
@@ -749,9 +749,9 @@
       "glifosato_l": 18.9,
       "diesel_l": 6.18
     },
-    "soja_paranagua": 135.59,
-    "milho_campinas": 55.293,
-    "algodao_br": 129.58,
+    "soja_paranagua": 135.37,
+    "milho_campinas": 55.5345,
+    "algodao_br": 130.36,
     "relacao_soja": {
       "ureia_sc_ton": 2.48,
       "map_sc_ton": 3.12,
@@ -761,14 +761,14 @@
       "diesel_sc_l": 0.05
     },
     "relacao_milho": {
-      "ureia_sc_ton": 6.08,
-      "map_sc_ton": 7.65,
-      "kcl_sc_ton": 4.47
+      "ureia_sc_ton": 6.05,
+      "map_sc_ton": 7.62,
+      "kcl_sc_ton": 4.45
     },
     "relacao_algodao": {
-      "ureia_arr_ton": 2.59,
-      "map_arr_ton": 3.26,
-      "kcl_arr_ton": 1.91
+      "ureia_arr_ton": 2.58,
+      "map_arr_ton": 3.24,
+      "kcl_arr_ton": 1.89
     },
     "fonte": "ANDA/CEPEA - Atualizar mensalmente",
     "data_ref": "04/2026"
