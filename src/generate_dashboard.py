@@ -393,7 +393,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         rid = "fr_"+safe_key
 
         if origem_key in HIST_FRETE:
-            onclick_call = "toggleFrete('" + rid + "','" + origem_key + " para " + r["destino"] + "')"
+            onclick_call = "toggleFrete('" + rid + "')"
             row_style = "cursor:pointer;"
             tip = "&#9660; clique para historico"
         else:
@@ -425,7 +425,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     ]
     for key,lbl,val,nota,cor in rt_cfg:
         rid2 = "rt_"+key
-        html+="<div class=\"rt-card\" onclick=\"toggleRT('"+rid2+"','"+key+"','"+lbl+"')\">"
+        html+="<div class=\"rt-card\" onclick=\"toggleRT('"+rid2+"','"+key+"')\">"
         html+="<div style=\"font-size:10px;color:#888;text-transform:uppercase;margin-bottom:4px;\">"+lbl+"</div>"
         html+="<div style=\"font-size:22px;font-weight:700;color:"+cor+";\">"+s(val)+"</div>"
         html+="<div style=\"font-size:11px;color:#666;margin-top:3px;\">"+nota+"</div>"
@@ -468,8 +468,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     html+="function st(n,el){document.querySelectorAll('.tc').forEach(function(e){e.classList.remove('active');});document.querySelectorAll('.tab').forEach(function(e){e.classList.remove('active');});document.getElementById('tab-'+n).classList.add('active');el.classList.add('active');}\n"
     html+="function sr(n,el){var ids=['soja','milho','algodao','ms','mm','ma'];ids.forEach(function(c){var e=document.getElementById('sr-'+c);if(e)e.style.display=c===n?'':'none';});document.querySelectorAll('.rtab').forEach(function(b){b.classList.remove('active');});el.classList.add('active');}\n"
 
-    # toggleRT - usa RT_DATA global
-    html+="""function toggleRT(rid, key, title) {
+    # toggleRT - usa RT_DATA global, sem titulo com acentos no onclick
+    html+="""function toggleRT(rid, key) {
   var box = document.getElementById(rid);
   if (!box) return;
   var showing = box.style.display === 'block';
@@ -477,7 +477,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   if (!showing && !_rtCharts[rid]) {
     var d = RT_DATA[key];
     if (!d) return;
-    document.getElementById(rid+'_lbl').textContent = title + ' - historico ultimas safras vs atual';
+    document.getElementById(rid+'_lbl').textContent = key + ' - historico 4 safras';
     var ctx = document.getElementById(rid+'_c');
     if (!ctx) return;
     _rtCharts[rid] = new Chart(ctx, {
@@ -498,8 +498,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   }
 }
 """
-    # toggleFrete - usa FR_DATA global
-    html+="""function toggleFrete(rid, title) {
+    # toggleFrete - usa FR_DATA global, sem titulo com acentos no onclick
+    html+="""function toggleFrete(rid) {
   var row = document.getElementById(rid);
   if (!row) return;
   var showing = row.style.display === 'table-row';
@@ -508,7 +508,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     var key = rid.replace('fr_','');
     var d = FR_DATA[key];
     if (!d) return;
-    document.getElementById(rid+'_lbl').textContent = title + ' - historico R$/ton';
+    document.getElementById(rid+'_lbl').textContent = key + ' - historico R$/ton por safra';
     var ctx = document.getElementById(rid+'_c');
     if (!ctx) return;
     _frCharts[rid] = new Chart(ctx, {
