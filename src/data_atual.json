@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-24T14:55:17.035553",
-  "data_coleta": "24/04/2026 14:55",
+  "timestamp": "2026-04-24T14:59:23.490698",
+  "data_coleta": "24/04/2026 14:59",
   "cambio": {
     "usd_brl": 4.9539,
     "data": "04-23-2026",
@@ -16,8 +16,8 @@
   },
   "precos": {
     "soja_cbot": {
-      "preco_usd_bushel": 11.57,
-      "preco_brl_saca": 126.1,
+      "preco_usd_bushel": 11.58,
+      "preco_brl_saca": 126.21,
       "ticker": "ZSK26.CBT"
     },
     "milho_cbot": {
@@ -32,8 +32,8 @@
     },
     "soja_futuros": {
       "Mai/26": {
-        "usd_bu": 11.57,
-        "brl_sc": 126.1
+        "usd_bu": 11.58,
+        "brl_sc": 126.21
       },
       "Jul/26": {
         "usd_bu": 11.72,
@@ -66,8 +66,8 @@
         "brl_sc": 54.71
       },
       "Dez/26": {
-        "usd_bu": 4.84,
-        "brl_sc": 56.59
+        "usd_bu": 4.83,
+        "brl_sc": 56.47
       },
       "Mar/27": {
         "usd_bu": 4.97,
@@ -122,7 +122,7 @@
       },
       {
         "data": "Apr/26",
-        "preco": 1172.25
+        "preco": 1172.5
       }
     ],
     "hist_milho": [
@@ -228,14 +228,14 @@
   },
   "pracas": {
     "soja": {
-      "Paranagua": 142.1,
-      "Rondonopolis": 135.0,
-      "Rio Verde": 133.4,
-      "Cascavel": 137.8,
-      "Uberlandia": 131.1,
-      "Passo Fundo": 139.4,
-      "Barreiras": 132.6,
-      "Sorriso": 133.9
+      "Paranagua": 142.21,
+      "Rondonopolis": 135.11,
+      "Rio Verde": 133.51,
+      "Cascavel": 137.91,
+      "Uberlandia": 131.21,
+      "Passo Fundo": 139.51,
+      "Barreiras": 132.71,
+      "Sorriso": 134.01
     },
     "milho": {
       "Campinas": 58.64,
@@ -251,7 +251,7 @@
       "Barreiras": 127.56,
       "Primavera": 125.46
     },
-    "ref_soja_paranagua": 142.1,
+    "ref_soja_paranagua": 142.21,
     "ref_milho_campinas": 58.64,
     "ref_algodao_br": 129.26
   },
@@ -749,11 +749,11 @@
       "glifosato_l": 18.9,
       "diesel_l": 6.18
     },
-    "soja_paranagua": 134.1,
+    "soja_paranagua": 134.20999999999998,
     "milho_campinas": 55.8495,
     "algodao_br": 129.26,
     "relacao_soja": {
-      "ureia_sc_ton": 2.51,
+      "ureia_sc_ton": 2.5,
       "map_sc_ton": 3.15,
       "kcl_sc_ton": 1.84,
       "ssp_sc_ton": 2.79,
