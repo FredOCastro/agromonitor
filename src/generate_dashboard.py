@@ -393,15 +393,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         rid = "fr_"+safe_key
 
         if origem_key in HIST_FRETE:
-            onclick_call = "toggleFrete('" + rid + "')"
+            data_attr = " data-rid=\""+rid+"\""
             row_style = "cursor:pointer;"
-            tip = "&#9660; clique para historico"
+            tip = "&#9660; historico"
         else:
-            onclick_call = ""
+            data_attr = ""
             row_style = ""
             tip = ""
 
-        html+="<tr style=\""+row_style+"\" onclick=\""+onclick_call+"\" onmouseover=\"this.style.background='#f0fff0'\" onmouseout=\"this.style.background=''\"><td style=\"font-size:12px;font-weight:500;\">"+r["origem"]+" para "+r["destino"]+"<br><span style=\"font-size:10px;color:#888;\">"+r["modal"]+" <span style=\"color:#3B6D11;\">"+tip+"</span></span></td><td style=\"text-align:right;font-size:14px;font-weight:700;\">R$ "+str(r["valor"])+"/ton</td><td style=\"text-align:right;font-size:11px;"+vc+"\">+"+s(r.get("var_pct","?"),1)+"%</td><td style=\"text-align:right;font-size:11px;color:#888;\">"+str(pct_soja)+"%% soja</td></tr>"
+        html+="<tr class=\"fr-row\" style=\""+row_style+"\""+data_attr+"><td style=\"font-size:12px;font-weight:500;\">"+r["origem"]+" &rarr; "+r["destino"]+"<br><span style=\"font-size:10px;color:#888;\">"+r["modal"]+" <span style=\"color:#3B6D11;\">"+tip+"</span></span></td><td style=\"text-align:right;font-size:14px;font-weight:700;\">R$ "+str(r["valor"])+"/ton</td><td style=\"text-align:right;font-size:11px;"+vc+"\">+"+s(r.get("var_pct","?"),1)+"%</td><td style=\"text-align:right;font-size:11px;color:#888;\">"+str(pct_soja)+"%% soja</td></tr>"
 
         if origem_key in HIST_FRETE:
             html+="<tr id=\""+rid+"\" class=\"fr-hist\"><td colspan=\"4\" style=\"padding:12px 16px;\"><div id=\""+rid+"_lbl\" style=\"font-size:12px;font-weight:600;color:#1a3a1a;margin-bottom:8px;\"></div><div style=\"position:relative;height:150px;\"><canvas id=\""+rid+"_c\"></canvas></div><div style=\"display:flex;gap:12px;margin-top:6px;font-size:10px;\"><span style=\"display:flex;align-items:center;gap:3px;\"><span style=\"width:10px;height:10px;background:#1D9E75;border-radius:2px;display:inline-block;\"></span>Safra atual</span><span style=\"display:flex;align-items:center;gap:3px;\"><span style=\"width:10px;height:10px;background:#E24B4A;border-radius:2px;display:inline-block;\"></span>Pico historico</span><span style=\"display:flex;align-items:center;gap:3px;\"><span style=\"width:10px;height:10px;background:#9FE1CB;border-radius:2px;display:inline-block;\"></span>Demais safras</span></div></td></tr>"
@@ -425,7 +425,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     ]
     for key,lbl,val,nota,cor in rt_cfg:
         rid2 = "rt_"+key
-        html+="<div class=\"rt-card\" onclick=\"toggleRT('"+rid2+"','"+key+"')\">"
+        html+="<div class=\"rt-card\" data-rid=\""+rid2+"\" data-key=\""+key+"\">"
         html+="<div style=\"font-size:10px;color:#888;text-transform:uppercase;margin-bottom:4px;\">"+lbl+"</div>"
         html+="<div style=\"font-size:22px;font-weight:700;color:"+cor+";\">"+s(val)+"</div>"
         html+="<div style=\"font-size:11px;color:#666;margin-top:3px;\">"+nota+"</div>"
@@ -464,65 +464,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     html+=js_fr+"\n"
     html+="var _rtCharts={}, _frCharts={};\n"
 
-    # Funcoes de navegacao
     html+="function st(n,el){document.querySelectorAll('.tc').forEach(function(e){e.classList.remove('active');});document.querySelectorAll('.tab').forEach(function(e){e.classList.remove('active');});document.getElementById('tab-'+n).classList.add('active');el.classList.add('active');}\n"
     html+="function sr(n,el){var ids=['soja','milho','algodao','ms','mm','ma'];ids.forEach(function(c){var e=document.getElementById('sr-'+c);if(e)e.style.display=c===n?'':'none';});document.querySelectorAll('.rtab').forEach(function(b){b.classList.remove('active');});el.classList.add('active');}\n"
 
-    # toggleRT - usa RT_DATA global, sem titulo com acentos no onclick
-    html+="""function toggleRT(rid, key) {
-  var box = document.getElementById(rid);
-  if (!box) return;
-  var showing = box.style.display === 'block';
-  box.style.display = showing ? 'none' : 'block';
-  if (!showing && !_rtCharts[rid]) {
-    var d = RT_DATA[key];
-    if (!d) return;
-    document.getElementById(rid+'_lbl').textContent = key + ' - historico 4 safras';
-    var ctx = document.getElementById(rid+'_c');
-    if (!ctx) return;
-    _rtCharts[rid] = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: RT_LABELS,
-        datasets: [
-          {label:'Soja',   data:d.soja,    backgroundColor:['#9FE1CB','#9FE1CB','#9FE1CB','#1D9E75']},
-          {label:'Milho',  data:d.milho,   backgroundColor:['#FAC775','#FAC775','#FAC775','#BA7517']},
-          {label:'Algodao',data:d.algodao, backgroundColor:['#AFA9EC','#AFA9EC','#AFA9EC','#7F77DD']}
-        ]
-      },
-      options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{position:'bottom',labels:{font:{size:10},color:'"""+tc2+"""'}}},
-        scales:{x:{ticks:{color:'"""+tc2+"""',font:{size:10}},grid:{color:'"""+gc+"""'}},
-                y:{ticks:{color:'"""+tc2+"""',font:{size:10}},grid:{color:'"""+gc+"""'}}}}
-    });
-  }
-}
-"""
-    # toggleFrete - usa FR_DATA global, sem titulo com acentos no onclick
-    html+="""function toggleFrete(rid) {
-  var row = document.getElementById(rid);
-  if (!row) return;
-  var showing = row.style.display === 'table-row';
-  row.style.display = showing ? 'none' : 'table-row';
-  if (!showing && !_frCharts[rid]) {
-    var key = rid.replace('fr_','');
-    var d = FR_DATA[key];
-    if (!d) return;
-    document.getElementById(rid+'_lbl').textContent = key + ' - historico R$/ton por safra';
-    var ctx = document.getElementById(rid+'_c');
-    if (!ctx) return;
-    _frCharts[rid] = new Chart(ctx, {
-      type: 'bar',
-      data: {labels: FR_LABELS, datasets:[{label:'R$/ton',data:d.values,backgroundColor:d.colors}]},
-      options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{display:false}},
-        scales:{x:{ticks:{color:'"""+tc2+"""',font:{size:11}},grid:{color:'"""+gc+"""'}},
-                y:{ticks:{color:'"""+tc2+"""',font:{size:11},callback:function(v){return 'R$'+v;}},
-                   grid:{color:'"""+gc+"""'},suggestedMin:d.min}}}
-    });
-  }
-}
-"""
 
     # Graficos estaticos
     html+="new Chart(document.getElementById('cSH'),{type:'line',data:{labels:"+hl(hist_soja)+",datasets:[{label:'Soja CBOT',data:"+hds(hist_soja)+",borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.07)',fill:true,tension:0.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'"+tc2+"',font:{size:10}},grid:{color:'"+gc+"'}},y:{ticks:{color:'"+tc2+"',callback:function(v){return '$'+v.toFixed(2);}},grid:{color:'"+gc+"'}}}}});\n"
@@ -530,6 +474,72 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     html+="new Chart(document.getElementById('cAH'),{type:'line',data:{labels:"+hl(hist_alg)+",datasets:[{label:'Algodao ICE',data:"+hda(hist_alg)+",borderColor:'#7F77DD',backgroundColor:'rgba(127,119,221,0.07)',fill:true,tension:0.3,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'"+tc2+"',font:{size:10}},grid:{color:'"+gc+"'}},y:{ticks:{color:'"+tc2+"',callback:function(v){return '$'+v.toFixed(4);}},grid:{color:'"+gc+"'}}}}});\n"
     html+="new Chart(document.getElementById('cSF'),{type:'line',data:{labels:"+sfl+",datasets:[{label:'Soja futuros',data:"+sfd+",borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',fill:true,tension:0.3,pointRadius:5,pointBackgroundColor:'#1D9E75'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'"+tc2+"'},grid:{color:'"+gc+"'}},y:{ticks:{color:'"+tc2+"',callback:function(v){return '$'+v.toFixed(2);}},grid:{color:'"+gc+"'}}}}});\n"
     html+="new Chart(document.getElementById('cFrete'),{type:'bar',data:{labels:['Cascavel PR','Uberlandia MG','Rio Verde GO','Rondonopolis MT','Sorriso MT','Barreiras BA'],datasets:[{label:'Frete pct soja',data:[4.0,6.9,10.6,16.1,18.3,13.1],backgroundColor:['#9FE1CB','#9FE1CB','#FAC775','#E24B4A','#E24B4A','#EF9F27']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'"+tc2+"',font:{size:10}},grid:{color:'"+gc+"'}},y:{ticks:{color:'"+tc2+"',callback:function(v){return v+'%';}},grid:{color:'"+gc+"'}}}}});\n"
+
+    # Event delegation - zero inline onclick, works with any text content
+    html+="""
+document.addEventListener('click', function(e) {
+  var rtCard = e.target.closest('.rt-card');
+  if (rtCard) {
+    var rid = rtCard.getAttribute('data-rid');
+    var key = rtCard.getAttribute('data-key');
+    if (!rid || !key) return;
+    var box = document.getElementById(rid);
+    if (!box) return;
+    var showing = box.style.display === 'block';
+    box.style.display = showing ? 'none' : 'block';
+    if (!showing && !_rtCharts[rid]) {
+      var d = RT_DATA[key];
+      if (!d) return;
+      var lbl = document.getElementById(rid+'_lbl');
+      if (lbl) lbl.textContent = key + ' - historico 4 safras';
+      var ctx = document.getElementById(rid+'_c');
+      if (!ctx) return;
+      _rtCharts[rid] = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: RT_LABELS,
+          datasets: [
+            {label:'Soja',   data:d.soja,    backgroundColor:['#9FE1CB','#9FE1CB','#9FE1CB','#1D9E75']},
+            {label:'Milho',  data:d.milho,   backgroundColor:['#FAC775','#FAC775','#FAC775','#BA7517']},
+            {label:'Algodao',data:d.algodao, backgroundColor:['#AFA9EC','#AFA9EC','#AFA9EC','#7F77DD']}
+          ]
+        },
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{position:'bottom',labels:{font:{size:10},color:'#888'}}},
+          scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}},
+                  y:{ticks:{color:'#888',font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}}}}
+      });
+    }
+    return;
+  }
+  var frRow = e.target.closest('.fr-row');
+  if (frRow) {
+    var rid2 = frRow.getAttribute('data-rid');
+    if (!rid2) return;
+    var row = document.getElementById(rid2);
+    if (!row) return;
+    var showing2 = row.style.display === 'table-row';
+    row.style.display = showing2 ? 'none' : 'table-row';
+    if (!showing2 && !_frCharts[rid2]) {
+      var key2 = rid2.replace('fr_','');
+      var d2 = FR_DATA[key2];
+      if (!d2) return;
+      var lbl2 = document.getElementById(rid2+'_lbl');
+      if (lbl2) lbl2.textContent = key2 + ' - historico R/ton por safra';
+      var ctx2 = document.getElementById(rid2+'_c');
+      if (!ctx2) return;
+      _frCharts[rid2] = new Chart(ctx2, {
+        type: 'bar',
+        data: {labels: FR_LABELS, datasets:[{label:'R/ton',data:d2.values,backgroundColor:d2.colors}]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false}},
+          scales:{x:{ticks:{color:'#888',font:{size:11}},grid:{color:'rgba(0,0,0,0.05)'}},
+                  y:{ticks:{color:'#888',font:{size:11},callback:function(v){return 'R$'+v;}},
+                     grid:{color:'rgba(0,0,0,0.05)'},suggestedMin:d2.min}}}
+      });
+    }
+  }
+});
+"""
     html+="</script></body></html>"
     return html
 
