@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-05-01T14:20:31.512298",
-  "data_coleta": "01/05/2026 14:20",
+  "timestamp": "2026-05-01T14:39:53.466078",
+  "data_coleta": "01/05/2026 14:39",
   "cambio": {
     "usd_brl": 4.9886,
     "data": "04-30-2026",
@@ -16,8 +16,8 @@
   },
   "precos": {
     "soja_cbot": {
-      "preco_usd_bushel": 11.85,
-      "preco_brl_saca": 130.05,
+      "preco_usd_bushel": 11.81,
+      "preco_brl_saca": 129.61,
       "ticker": "ZSK26.CBT"
     },
     "milho_cbot": {
@@ -32,24 +32,24 @@
     },
     "soja_futuros": {
       "Mai/26": {
-        "usd_bu": 11.85,
-        "brl_sc": 130.05
+        "usd_bu": 11.81,
+        "brl_sc": 129.61
       },
       "Jul/26": {
-        "usd_bu": 12.0,
-        "brl_sc": 131.7
+        "usd_bu": 11.96,
+        "brl_sc": 131.26
       },
       "Set/26": {
-        "usd_bu": 11.73,
-        "brl_sc": 128.74
+        "usd_bu": 11.71,
+        "brl_sc": 128.52
       },
       "Nov/26": {
-        "usd_bu": 11.79,
-        "brl_sc": 129.39
+        "usd_bu": 11.76,
+        "brl_sc": 129.07
       },
       "Jan/27": {
-        "usd_bu": 11.91,
-        "brl_sc": 130.71
+        "usd_bu": 11.89,
+        "brl_sc": 130.49
       }
     },
     "milho_futuros": {
@@ -122,7 +122,7 @@
       },
       {
         "data": "May/26",
-        "preco": 1200.0
+        "preco": 1196.5
       }
     ],
     "hist_milho": [
@@ -228,14 +228,14 @@
   },
   "pracas": {
     "soja": {
-      "Paranagua": 146.05,
-      "Rondonopolis": 138.95,
-      "Rio Verde": 137.35,
-      "Cascavel": 141.75,
-      "Uberlandia": 135.05,
-      "Passo Fundo": 143.35,
-      "Barreiras": 136.55,
-      "Sorriso": 137.85
+      "Paranagua": 145.61,
+      "Rondonopolis": 138.51,
+      "Rio Verde": 136.91,
+      "Cascavel": 141.31,
+      "Uberlandia": 134.61,
+      "Passo Fundo": 142.91,
+      "Barreiras": 136.11,
+      "Sorriso": 137.41
     },
     "milho": {
       "Campinas": 60.48,
@@ -251,7 +251,7 @@
       "Barreiras": 134.58,
       "Primavera": 132.48
     },
-    "ref_soja_paranagua": 146.05,
+    "ref_soja_paranagua": 145.61,
     "ref_milho_campinas": 60.48,
     "ref_algodao_br": 136.28
   },
@@ -749,14 +749,14 @@
       "glifosato_l": 18.9,
       "diesel_l": 6.18
     },
-    "soja_paranagua": 138.05,
+    "soja_paranagua": 137.61,
     "milho_campinas": 57.603,
     "algodao_br": 136.28,
     "relacao_soja": {
-      "ureia_sc_ton": 2.43,
-      "map_sc_ton": 3.06,
+      "ureia_sc_ton": 2.44,
+      "map_sc_ton": 3.07,
       "kcl_sc_ton": 1.79,
-      "ssp_sc_ton": 2.71,
+      "ssp_sc_ton": 2.72,
       "glifosato_sc_l": 0.14,
       "diesel_sc_l": 0.04
     },
