@@ -1,26 +1,26 @@
 {
-  "data_analise": "18/05/2026 13:40",
+  "data_analise": "19/05/2026 12:36",
   "nivel_risco": "Critico",
   "mudanca_detectada": true,
-  "tipo_mudanca": "Alerta ONI com valor anomalo (27.28) - possivel erro de dados ou evento climatico extremo sem precedentes. Precos de soja e milho em alta.",
+  "tipo_mudanca": "Preços em alta com ENSO em níveis extremos - ONI 27.28 indica anomalia severa nos dados ou El Niño histórico",
   "alerta_imediato": true,
-  "motivo_alerta": "URGENTE: Valor ONI de 27.28 esta completamente fora da escala historica (normal: -3 a +3). Se confirmado, representa evento climatico catastrofico. Recomenda-se verificar fonte de dados imediatamente. Paralelamente, precos subiram (soja +2.5%, milho +4.2%) criando janela de hedge.",
-  "assunto_email": "CRITICO: Anomalia ONI detectada + Janela de hedge aberta - Acao imediata necessaria",
-  "enso_resumo": "ONI reportado em 27.28 esta fora de qualquer parametro historico (El Nino mais forte ja registrado foi 2.6 em 2015/16). Valor provavelmente representa erro de dados, mas se confirmado indicaria evento climatico sem precedentes. Necessaria verificacao urgente junto ao NOAA.",
-  "clima_resumo": "Regiao do Triangulo Mineiro (Araxa) com precipitacao de 10.7mm/14d - condicoes adequadas sem alertas. Seca severa em MT, GO, RS e BA pode impactar oferta nacional e sustentar precos. Temperaturas amenas em MG (15.8-26.9C) favoraveis para milho safrinha em finalizacao.",
-  "precos_resumo": "Soja CBOT USD 12.03/bu (R$134.06/sc) em alta de 2.5% vs estado anterior. Milho CBOT USD 4.70/bu (R$56.19/sc) subiu 4.2%. Basis Uberlandia: soja R$139.06/sc (premio de R$5 sobre CBOT convertido), milho R$55.55/sc. Curva futura de milho em contango ate Mar/27 (R$60.49).",
-  "safras_resumo": "Soja Brasil 94% colhida com 167 MT (+2% vs anterior). MG em 88% colheita com produtividade 3.412 kg/ha (-2%). Milho 2a safra 68% colhido nacionalmente, MG apenas 58% - risco climatico ainda presente. Producao milho Brasil -8% vs safra anterior (137 MT), pressionando precos.",
+  "motivo_alerta": "ONI em 27.28 representa valor completamente fora da escala normal (escala vai de -3 a +3). Verificar fonte de dados. Se confirmado El Niño Forte, risco climático extremo para safrinha 26/27. Soja subiu para USD 12.15 (+1%) e milho para USD 4.78 (+1.7%) - janela de hedge favorável.",
+  "assunto_email": "ALERTA CRÍTICO: Verificar dados ENSO + Janela de Hedge Favorável - Soja R$133,90 e Milho R$56,51",
+  "enso_resumo": "ONI reportado em 27.28 está completamente fora da escala climatológica normal (-3 a +3). Se dado correto, seria evento climático sem precedentes. Recomendo verificação urgente da fonte NOAA. Status indica El Niño Forte com tendência de alta.",
+  "clima_resumo": "Região de Araxá com 11mm nos últimos 14 dias - condição adequada para maio. MT, GO, MS, RS e BA em alerta de seca severa com menos de 3mm acumulados. Safrinha de milho em MG com 58% colhida enfrenta período seco típico do outono.",
+  "precos_resumo": "Soja CBOT em USD 12.15/bu (R$133,90/sc) recuperou para níveis de março. Milho CBOT em USD 4.78/bu (R$56,51/sc) em tendência de alta desde abril. Câmbio estável em R$5,01. Paranaguá paga R$149,90 para soja e Uberlândia R$138,90 - prêmios regionais atrativos.",
+  "safras_resumo": "Soja Brasil 94% colhida com 167 MT confirmados (+2% vs anterior). MG com 88% colhido e produtividade de 3.412 kg/ha (-2%). Milho 2ª safra 68% colhido nacionalmente, MG apenas 58%. Projeção 26/27 preocupante: Brasil -8% em milho e queda global de estoques.",
   "recomendacao_hedge_soja_pct": 65,
   "recomendacao_hedge_milho_pct": 55,
-  "justificativa_hedge": "Precos atuais representam oportunidade relevante: soja acima de R$134/sc e milho acima de R$56/sc em CBOT. Quebra de safra de milho no Brasil (-8%) e estoques mundiais projetados em queda para 26/27 dao suporte. Incerteza climatica extrema (se ONI confirmado) justifica protecao acima do normal. Travar 65% da soja e 55% do milho nos niveis atuais garante margem operacional.",
-  "resumo_executivo": "ATENCAO MAXIMA: O sistema detectou valor de ONI (Indice Nino Oceanico) de 27.28, completamente fora da escala conhecida. O El Nino mais intenso da historia registrou ONI de 2.6. Este valor pode representar erro de transmissao de dados do NOAA ou, em cenario extremamente improvavel, evento climatico sem precedentes. Recomendo contato imediato com sua consultoria meteorologica para validacao antes de qualquer decisao baseada neste indicador.\n\nIndependentemente da questao climatica, os precos oferecem janela favoravel para hedge. Soja em R$134-139/sc e milho acima de R$55/sc estao em patamares que garantem rentabilidade. A quebra confirmada de milho no Brasil (-8%, apenas 137 MT) e reducao projetada de estoques mundiais para 26/27 dao fundamento para precos sustentados. A curva futura de milho em contango (Mar/27 a R$60.49) sinaliza expectativa de aperto de oferta.\n\nPara suas fazendas no Triangulo Mineiro, o cenario e relativamente favoravel: sem alertas de seca ou excesso hidrico, colheita de soja em finalizacao (88% em MG) e milho safrinha em desenvolvimento normal. O frete de Uberlandia para Santos (R$94/ton) permanece competitivo. Aproveite a janela atual para travar precos, especialmente do milho cuja oferta esta comprometida nacionalmente.",
+  "justificativa_hedge": "Preços atuais representam recuperação significativa desde março. Com El Niño potencialmente severo afetando safra 26/27, há risco de volatilidade extrema. Soja a R$133-134/sc e milho a R$56-57/sc estão acima das médias históricas. Recomendo travar 65% da soja remanescente e 55% do milho safrinha já colhido, aproveitando curva futura positiva do milho (Mar/27 a R$60,53).",
+  "resumo_executivo": "Senhor Produtor, os dados climáticos apresentam uma anomalia crítica que requer verificação imediata: o índice ONI está reportado em 27.28, quando a escala normal varia apenas de -3 a +3. Se este valor estiver correto, estaríamos diante de um evento climático sem precedentes na história. Recomendo contato urgente com consultoria meteorológica para validação. Independente disso, o status de El Niño Forte está confirmado e representa risco elevado para o planejamento da safra 26/27.\n\nNo aspecto comercial, temos uma janela favorável para hedge. A soja recuperou para R$133,90/sc na CBOT (equivalente) e Paranaguá paga R$149,90/sc - níveis não vistos desde início de março. O milho também reagiu positivamente, com CBOT em R$56,51/sc e curva futura ascendente até março/27 (R$60,53/sc). O câmbio estabilizado em R$5,01 sustenta a paridade. Com a colheita de soja em MG a 88% e milho safrinha a 58%, é momento de garantir margens.\n\nA situação de safra brasileira está consolidada com 167 MT de soja, mas a projeção para 26/27 já indica retração global. Os estoques mundiais de soja devem cair de 128 MT para 112 MT, e milho de 322 MT para 302 MT. Este cenário de aperto justifica estratégia mais agressiva de hedge agora, especialmente considerando que suas fazendas no Triângulo Mineiro estão em região com condições hídricas ainda adequadas (11mm em 14 dias), mas cercadas por áreas em seca severa.",
   "acoes_recomendadas": [
-    "URGENTE: Verificar junto ao NOAA/INMET a veracidade do ONI 27.28 - possivel erro de dados",
-    "Executar hedge de 65% da soja disponivel nos contratos Nov/26 ou Jan/27 (R$133-134/sc)",
-    "Travar 55% do milho safrinha em contratos Dez/26 ou Mar/27 aproveitando contango",
-    "Acelerar colheita de soja remanescente (12% pendente em MG) antes de possiveis instabilidades",
-    "Monitorar diariamente evolucao do milho safrinha - colheita MG apenas 58%, risco ainda presente"
+    "URGENTE: Validar dados ENSO com fonte secundária - ONI de 27.28 é estatisticamente impossível na escala normal",
+    "Executar hedge de 65% da soja disponível nos contratos Jul/26 ou Set/26 enquanto CBOT acima de USD 12.00",
+    "Travar 55% do milho safrinha colhido em contratos Dez/26 ou Mar/27 aproveitando curva em contango",
+    "Acelerar colheita do milho safrinha remanescente em Araxá/Ibiá antes de possível deterioração climática",
+    "Revisar planejamento de plantio 26/27: considerar atraso no plantio de soja se El Niño persistir até primavera"
   ],
-  "proximo_evento_importante": "Relatorio CONAB Maio/2026 com atualizacao de safra e USDA WASDE com estoques mundiais",
-  "proximo_evento_data": "Maio/2026"
+  "proximo_evento_importante": "Relatório WASDE USDA com revisão de estoques globais e primeira projeção oficial safra 26/27",
+  "proximo_evento_data": "Junho/2026"
 }
