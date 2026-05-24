@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-05-23T11:04:59.443421",
-  "data_coleta": "23/05/2026 11:04",
+  "timestamp": "2026-05-24T11:10:30.877177",
+  "data_coleta": "24/05/2026 11:10",
   "cambio": {
     "usd_brl": 5.014,
     "data": "05-22-2026",
@@ -250,17 +250,17 @@
   "clima_estados": {
     "MT": {
       "nome": "Mato Grosso (Sorriso)",
-      "precip_7d_mm": 0.9,
-      "precip_14d_mm": 0.9,
-      "temp_max": 32.2,
-      "temp_min": 18.2,
+      "precip_7d_mm": 0.4,
+      "precip_14d_mm": 20.8,
+      "temp_max": 32.8,
+      "temp_min": 18.6,
       "alerta_seca": true,
       "alerta_excesso": false
     },
     "GO": {
       "nome": "Goias (Rio Verde)",
-      "precip_7d_mm": 0.8,
-      "precip_14d_mm": 0.8,
+      "precip_7d_mm": 0,
+      "precip_14d_mm": 4.2,
       "temp_max": 29.5,
       "temp_min": 17.9,
       "alerta_seca": true,
@@ -268,55 +268,55 @@
     },
     "MS": {
       "nome": "Mato Grosso do Sul",
-      "precip_7d_mm": 10.5,
-      "precip_14d_mm": 36.3,
-      "temp_max": 26.4,
-      "temp_min": 15.7,
-      "alerta_seca": false,
+      "precip_7d_mm": 1.6,
+      "precip_14d_mm": 28.6,
+      "temp_max": 26.8,
+      "temp_min": 16.4,
+      "alerta_seca": true,
       "alerta_excesso": false
     },
     "MG": {
       "nome": "Minas Gerais (Araxa)",
-      "precip_7d_mm": 0.7,
-      "precip_14d_mm": 14.5,
-      "temp_max": 26.8,
-      "temp_min": 15.6,
+      "precip_7d_mm": 1.0,
+      "precip_14d_mm": 2.2,
+      "temp_max": 26.5,
+      "temp_min": 15.8,
       "alerta_seca": true,
       "alerta_excesso": false
     },
     "PR": {
       "nome": "Parana (Cascavel)",
-      "precip_7d_mm": 36.5,
-      "precip_14d_mm": 36.9,
-      "temp_max": 21.7,
-      "temp_min": 10.8,
+      "precip_7d_mm": 81.4,
+      "precip_14d_mm": 96.4,
+      "temp_max": 22.7,
+      "temp_min": 12.1,
       "alerta_seca": false,
       "alerta_excesso": false
     },
     "RS": {
       "nome": "Rio Grande do Sul",
-      "precip_7d_mm": 22.5,
-      "precip_14d_mm": 24.1,
-      "temp_max": 19.6,
-      "temp_min": 8.0,
+      "precip_7d_mm": 20.4,
+      "precip_14d_mm": 39.6,
+      "temp_max": 21.2,
+      "temp_min": 8.8,
       "alerta_seca": false,
       "alerta_excesso": false
     },
     "BA": {
       "nome": "Bahia (Barreiras)",
-      "precip_7d_mm": 3.1,
-      "precip_14d_mm": 3.7,
-      "temp_max": 32.8,
-      "temp_min": 17.2,
+      "precip_7d_mm": 4.5,
+      "precip_14d_mm": 4.5,
+      "temp_max": 32.5,
+      "temp_min": 18.9,
       "alerta_seca": true,
       "alerta_excesso": false
     },
     "MA": {
       "nome": "Maranhao (Balsas)",
-      "precip_7d_mm": 2.0,
-      "precip_14d_mm": 50.6,
-      "temp_max": 33.0,
-      "temp_min": 21.2,
+      "precip_7d_mm": 2.1,
+      "precip_14d_mm": 14.1,
+      "temp_max": 33.2,
+      "temp_min": 19.9,
       "alerta_seca": true,
       "alerta_excesso": false
     }
