@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-05-28T13:43:48.876668",
+  "timestamp": "2026-05-29T12:44:58.761976",
   "oni": 27.28,
   "status_enso": "El Nino Forte",
-  "soja_usd": 11.92,
-  "milho_usd": 4.56,
-  "cambio": 5.0579,
+  "soja_usd": 11.98,
+  "milho_usd": 4.53,
+  "cambio": 5.0517,
   "nivel_risco": "Critico",
   "recomendacao_hedge_soja_pct": 65,
-  "recomendacao_hedge_milho_pct": 55
+  "recomendacao_hedge_milho_pct": 75
 }
