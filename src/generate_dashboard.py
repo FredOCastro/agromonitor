@@ -245,6 +245,137 @@ def js_frete_data(frete_js):
     lines.append('var FR_LABELS = '+json.dumps(SAFRAS_FRETE)+';')
     return "\n".join(lines)
 
+# Mapeamento praças → macrorregioes
+REGIAO_MAP = {
+    "Centro-Oeste": {
+        "estados": "MT, GO, MS",
+        "cor": "#E24B4A",
+        "soja_pracas":  ["Sorriso","Rondonopolis","Rio Verde"],
+        "milho_pracas": ["Rondonopolis","Rio Verde"],
+        "alg_pracas":   ["Cuiaba"],
+    },
+    "MATOPIBA": {
+        "estados": "MA, TO, PI, BA",
+        "cor": "#EF9F27",
+        "soja_pracas":  ["Barreiras"],
+        "milho_pracas": [],
+        "alg_pracas":   ["Barreiras"],
+    },
+    "Sul": {
+        "estados": "PR, SC, RS",
+        "cor": "#378ADD",
+        "soja_pracas":  ["Cascavel","Passo Fundo"],
+        "milho_pracas": ["Cascavel","Maringa"],
+        "alg_pracas":   [],
+    },
+    "Sudeste": {
+        "estados": "MG, SP",
+        "cor": "#9F5BC4",
+        "soja_pracas":  ["Uberlandia"],
+        "milho_pracas": ["Campinas","Uberlandia"],
+        "alg_pracas":   [],
+    },
+    "Referencia": {
+        "estados": "Paranagua/Campinas",
+        "cor": "#1D9E75",
+        "soja_pracas":  ["Paranagua"],
+        "milho_pracas": ["Campinas"],
+        "alg_pracas":   ["CEPEA BR"],
+    },
+}
+
+def media_pracas(pracas_dict, keys):
+    vals = [float(pracas_dict[k]) for k in keys if k in pracas_dict]
+    return round(sum(vals)/len(vals), 2) if vals else None
+
+def tabela_precos_regiao(prac_soja, prac_milho, prac_alg, ref_pga, ref_cpx, ref_alg):
+    h = "<div class=\"card\"><div class=\"ct\">Precos por Macrorregiao Produtora</div>"
+    h += "<div style=\"font-size:11px;color:#888;margin-bottom:12px;\">Preco medio ponderado por regiao &#183; Base: pracas CEPEA/ESALQ &#183; Basis vs referencia nacional</div>"
+    h += "<div style=\"overflow-x:auto;\"><table class=\"tbl\"><thead><tr>"
+    h += "<th>Regiao</th><th>Estados</th>"
+    h += "<th style=\"text-align:right;\">Soja (R$/sc)</th><th style=\"text-align:right;\">Basis Soja</th>"
+    h += "<th style=\"text-align:right;\">Milho (R$/sc)</th><th style=\"text-align:right;\">Basis Milho</th>"
+    h += "<th style=\"text-align:right;\">Algodao (R$/@)</th>"
+    h += "</tr></thead><tbody>"
+
+    for regiao, cfg in REGIAO_MAP.items():
+        cor = cfg["cor"]
+        estados = cfg["estados"]
+        ps = media_pracas(prac_soja, cfg["soja_pracas"])
+        pm = media_pracas(prac_milho, cfg["milho_pracas"])
+        pa = media_pracas(prac_alg, cfg["alg_pracas"])
+
+        def fmt(v, ref, simbolo=""):
+            if v is None: return "<td style=\"text-align:right;color:#ccc;\">-</td><td style=\"text-align:right;color:#ccc;\">-</td>"
+            basis = round(float(v) - float(ref), 2)
+            bc = "color:#A32D2D;" if basis < 0 else ("color:#27500A;" if basis > 0 else "color:#888;")
+            bs = ("+"+str(basis) if basis > 0 else str(basis))
+            return "<td style=\"text-align:right;font-weight:600;\">"+s(v)+simbolo+"</td><td style=\"text-align:right;font-size:11px;"+bc+"\">"+bs+"</td>"
+
+        def fmt1(v, simbolo=""):
+            if v is None: return "<td style=\"text-align:right;color:#ccc;\">-</td>"
+            return "<td style=\"text-align:right;font-weight:600;\">"+s(v)+simbolo+"</td>"
+
+        h += "<tr>"
+        h += "<td><span style=\"display:inline-block;width:8px;height:8px;border-radius:50%;background:"+cor+";margin-right:6px;\"></span><strong>"+regiao+"</strong></td>"
+        h += "<td style=\"font-size:11px;color:#888;\">"+estados+"</td>"
+        h += fmt(ps, ref_pga)
+        h += fmt(pm, ref_cpx)
+        h += fmt1(pa)
+        h += "</tr>"
+
+    h += "</tbody></table></div>"
+    h += "<div style=\"font-size:10px;color:#aaa;margin-top:8px;\">Referencia: Soja Paranagua R$ referencia &#183; Milho Campinas &#183; Algodao CEPEA BR</div>"
+    h += "</div>"
+    return h
+
+def proj_rt(hist_vals, oni):
+    """Projeta RT safra 26/27 baseado na tendencia + fator El Nino.
+    El Nino sobe preço dos insumos em relacao ao grao (piora a RT).
+    Fator: ONI > 1.0 = +8-15%, ONI 0.5-1.0 = +3-8%, neutro = tendencia pura.
+    """
+    if len(hist_vals) < 2:
+        return None
+    validos = [v for v in hist_vals if v is not None]
+    if len(validos) < 2:
+        return None
+    # Tendencia: media ponderada dos ultimos 2 valores
+    tend = validos[-1] * 0.6 + validos[-2] * 0.4
+    # Fator El Nino: grao cai mais que insumo -> RT sobe
+    oni_f = float(oni) if oni else 0
+    if oni_f >= 1.5:   fator = 1.15   # El Nino forte: RT +15%
+    elif oni_f >= 1.0: fator = 1.10   # El Nino moderado: RT +10%
+    elif oni_f >= 0.5: fator = 1.05   # El Nino fraco: RT +5%
+    elif oni_f <= -1.0: fator = 0.92  # La Nina: RT -8% (grao sobe)
+    elif oni_f <= -0.5: fator = 0.96  # La Nina fraca: RT -4%
+    else:              fator = 1.01   # Neutro: leve alta tendencial
+    return round(tend * fator, 3)
+
+
+def js_rt_data_v2(hist_rt, oni):
+    """Gera RT_DATA com projecao 26/27 baseada no ONI."""
+    lines = ["var RT_DATA = {"]
+    safras_com_proj = SAFRAS_RT + ["26/27*"]
+    for key, crops in hist_rt.items():
+        # Projeta para cada cultura
+        proj_s = proj_rt(crops["soja"],   oni)
+        proj_m = proj_rt(crops["milho"],  oni)
+        proj_a = proj_rt(crops["algodao"],oni)
+        s_vals   = [round(v,3) if v else 0 for v in crops["soja"]]   + [proj_s if proj_s else 0]
+        m_vals   = [round(v,3) if v else 0 for v in crops["milho"]]  + [proj_m if proj_m else 0]
+        a_vals   = [round(v,3) if v else 0 for v in crops["algodao"]]+ [proj_a if proj_a else 0]
+        # Flags de projecao (ultimo ponto)
+        lines.append('  "'+key+'": {')
+        lines.append('    soja:'+json.dumps(s_vals)+',')
+        lines.append('    milho:'+json.dumps(m_vals)+',')
+        lines.append('    algodao:'+json.dumps(a_vals)+',')
+        lines.append('    proj_idx: 4')  # index do ponto projetado
+        lines.append('  },')
+    lines.append("};")
+    lines.append('var RT_LABELS = '+json.dumps(safras_com_proj)+';')
+    return "\n".join(lines)
+
+
 def gerar(analise, dados):
     enso=dados.get("enso",{}); precos=dados.get("precos",{}); pracas=dados.get("pracas",{})
     cambio=dados.get("cambio",{}); clima=dados.get("clima_estados",{}); safras=dados.get("safras",{})
@@ -292,7 +423,7 @@ def gerar(analise, dados):
         if rk2 in rt_alg:
             crops["algodao"][3]=round(float(rt_alg[rk2]),3)
 
-    js_rt  = js_rt_data(HIST_RT)
+    js_rt  = js_rt_data_v2(HIST_RT, oni)
     js_fr  = js_frete_data(HIST_FRETE)
 
     CSS="""*{box-sizing:border-box;margin:0;padding:0;}
@@ -345,7 +476,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     html+="<div id=\"tab-visao\" class=\"tc active\"><div class=\"wrap\">"
     html+="<div class=\"g2\"><div class=\"card\"><div class=\"ct\">Cambio e Precos Spot</div><div class=\"g2\"><div class=\"met\"><div class=\"ml\">USD/BRL</div><div class=\"mv\">R$ "+s(usd)+"</div></div><div class=\"met\"><div class=\"ml\">Soja CBOT</div><div class=\"mv\">USD "+s(soja_cbot.get("preco_usd_bushel","?"))+"/bu</div><div class=\"ms\">R$ "+s(soja_cbot.get("preco_brl_saca","?"))+"/sc</div></div><div class=\"met\"><div class=\"ml\">Milho CBOT</div><div class=\"mv\">USD "+s(milho_cbot.get("preco_usd_bushel","?"))+"/bu</div><div class=\"ms\">R$ "+s(milho_cbot.get("preco_brl_saca","?"))+"/sc</div></div><div class=\"met\"><div class=\"ml\">Algodao ICE</div><div class=\"mv\">USD "+s(alg_ice.get("preco_usd_lb","?"),4)+"/lb</div><div class=\"ms\">R$ "+s(alg_ice.get("preco_brl_arroba","?"))+"/@</div></div></div></div>"
     html+="<div class=\"card\"><div class=\"ct\">Alertas do Dia</div><div class=\"ai\"><div class=\"dot dr\"></div><div style=\"font-size:13px;line-height:1.6;\"><strong>ENSO:</strong> "+analise.get("enso_resumo","")+"</div></div><div class=\"ai\"><div class=\"dot da\"></div><div style=\"font-size:13px;line-height:1.6;\"><strong>Mercado:</strong> "+pr_res+"</div></div><div class=\"ai\"><div class=\"dot db\"></div><div style=\"font-size:13px;line-height:1.6;\"><strong>Proximo evento:</strong> "+pe+" - "+pd_+"</div></div></div></div>"
-    html+="<div class=\"card\"><div class=\"ct\">Precos por Praca</div><div class=\"g3\"><div><div style=\"font-size:12px;font-weight:700;color:#1D9E75;margin-bottom:8px;\">Soja (R$/sc)</div><table class=\"tbl\"><thead><tr><th>Praca</th><th style=\"text-align:right;\">R$/sc</th><th style=\"text-align:right;\">Basis</th></tr></thead><tbody>"+tabela_pracas(prac_soja,ref_pga)+"</tbody></table></div><div><div style=\"font-size:12px;font-weight:700;color:#BA7517;margin-bottom:8px;\">Milho (R$/sc)</div><table class=\"tbl\"><thead><tr><th>Praca</th><th style=\"text-align:right;\">R$/sc</th><th style=\"text-align:right;\">Basis</th></tr></thead><tbody>"+tabela_pracas(prac_milho,ref_cpx)+"</tbody></table></div><div><div style=\"font-size:12px;font-weight:700;color:#534AB7;margin-bottom:8px;\">Algodao (R$/@)</div><table class=\"tbl\"><thead><tr><th>Praca</th><th style=\"text-align:right;\">R$/@</th></tr></thead><tbody>"+"".join("<tr><td>"+p+"</td><td style=\"text-align:right;\"><b>"+s(v)+"</b></td></tr>" for p,v in prac_alg.items())+"</tbody></table></div></div></div>"
+    html+=tabela_precos_regiao(prac_soja, prac_milho, prac_alg, ref_pga, ref_cpx, ref_alg)
     html+="<div class=\"card\"><div class=\"ct\">Resumo da Analise</div><p style=\"font-size:14px;line-height:1.8;color:#333;\">"+resumo+"</p></div>"
     html+="</div></div>"
 
@@ -431,9 +562,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         html+="<div style=\"font-size:11px;color:#666;margin-top:3px;\">"+nota+"</div>"
         html+="<div style=\"font-size:10px;color:#888;margin-top:6px;\">&#9660; ver historico 3 safras</div>"
         html+="<div id=\""+rid2+"\" class=\"rt-hist\">"
-        html+="<div id=\""+rid2+"_lbl\" style=\"font-size:12px;font-weight:600;color:#1a3a1a;margin-bottom:8px;\"></div>"
-        html+="<div style=\"position:relative;height:160px;\"><canvas id=\""+rid2+"_c\"></canvas></div>"
-        html+="<div style=\"display:flex;gap:10px;margin-top:6px;font-size:10px;\"><span style=\"display:flex;align-items:center;gap:3px;\"><span style=\"width:8px;height:8px;background:#1D9E75;border-radius:2px;display:inline-block;\"></span>Soja</span><span style=\"display:flex;align-items:center;gap:3px;\"><span style=\"width:8px;height:8px;background:#BA7517;border-radius:2px;display:inline-block;\"></span>Milho</span><span style=\"display:flex;align-items:center;gap:3px;\"><span style=\"width:8px;height:8px;background:#7F77DD;border-radius:2px;display:inline-block;\"></span>Algodao</span><span style=\"color:#aaa;\">* = safra atual</span></div>"
+        html+="<div id=\""+rid2+"_lbl\" style=\"font-size:12px;font-weight:600;color:#1a3a1a;margin-bottom:4px;\"></div>"
+        html+="<div style=\"font-size:10px;color:#888;margin-bottom:8px;\">Linha solida = historico &#183; Linha tracejada = projecao 26/27 ajustada pelo cenario ENSO atual</div>"
+        html+="<div style=\"position:relative;height:200px;\"><canvas id=\""+rid2+"_c\"></canvas></div>"
+        html+="<div style=\"display:flex;gap:10px;margin-top:6px;font-size:10px;\"><span style=\"display:flex;align-items:center;gap:3px;\"><span style=\"width:14px;height:2px;background:#1D9E75;display:inline-block;\"></span>Soja</span><span style=\"display:flex;align-items:center;gap:3px;\"><span style=\"width:14px;height:2px;background:#BA7517;display:inline-block;\"></span>Milho</span><span style=\"display:flex;align-items:center;gap:3px;\"><span style=\"width:14px;height:2px;background:#7F77DD;display:inline-block;\"></span>Algodao</span><span style=\"display:flex;align-items:center;gap:3px;\"><span style=\"width:14px;height:2px;background:#888;border-top:2px dashed #888;display:inline-block;\"></span>Proj.</span></div>"
         html+="</div></div>"
 
     html+="<div style=\"border:1px solid #eee;border-radius:8px;padding:12px;\"><div style=\"font-size:10px;color:#888;text-transform:uppercase;margin-bottom:6px;\">Como interpretar</div><div style=\"font-size:12px;color:#555;line-height:1.7;\">Sacas de soja equivalentes a 1 unidade do insumo. <strong>Quanto menor, melhor</strong> para o produtor.</div><div style=\"font-size:11px;color:#888;margin-top:8px;\">Media historica ureia: 2.1 sc/ton &#183; Atual: "+s(rt_soja.get("ureia_sc_ton","?"))+" sc/ton</div></div>"
@@ -491,22 +623,60 @@ document.addEventListener('click', function(e) {
       var d = RT_DATA[key];
       if (!d) return;
       var lbl = document.getElementById(rid+'_lbl');
-      if (lbl) lbl.textContent = key + ' - historico 4 safras';
+      if (lbl) lbl.textContent = key + ' - tendencia e projecao 26/27';
       var ctx = document.getElementById(rid+'_c');
       if (!ctx) return;
+      var pi = d.proj_idx || 4;
+      // Linha solida ate penultimo, tracejada no ultimo (projecao)
+      function mkSolid(vals, cor) {
+        return vals.map(function(v,i){ return i < pi ? v : null; });
+      }
+      function mkProj(vals) {
+        return vals.map(function(v,i){ return i >= pi-1 ? v : null; });
+      }
       _rtCharts[rid] = new Chart(ctx, {
-        type: 'bar',
-        data: { labels: RT_LABELS,
+        type: 'line',
+        data: {
+          labels: RT_LABELS,
           datasets: [
-            {label:'Soja',   data:d.soja,    backgroundColor:['#9FE1CB','#9FE1CB','#9FE1CB','#1D9E75']},
-            {label:'Milho',  data:d.milho,   backgroundColor:['#FAC775','#FAC775','#FAC775','#BA7517']},
-            {label:'Algodao',data:d.algodao, backgroundColor:['#AFA9EC','#AFA9EC','#AFA9EC','#7F77DD']}
+            {label:'Soja (hist)',    data:mkSolid(d.soja,'#1D9E75'),   borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',fill:false,tension:0.3,pointRadius:5,pointBackgroundColor:'#1D9E75',spanGaps:false},
+            {label:'Soja (proj)',    data:mkProj(d.soja),              borderColor:'#1D9E75',backgroundColor:'transparent',fill:false,tension:0.3,pointRadius:6,pointBackgroundColor:'white',pointBorderColor:'#1D9E75',pointBorderWidth:2,borderDash:[6,4],spanGaps:false},
+            {label:'Milho (hist)',   data:mkSolid(d.milho,'#BA7517'),  borderColor:'#BA7517',backgroundColor:'transparent',fill:false,tension:0.3,pointRadius:5,pointBackgroundColor:'#BA7517',spanGaps:false},
+            {label:'Milho (proj)',   data:mkProj(d.milho),             borderColor:'#BA7517',backgroundColor:'transparent',fill:false,tension:0.3,pointRadius:6,pointBackgroundColor:'white',pointBorderColor:'#BA7517',pointBorderWidth:2,borderDash:[6,4],spanGaps:false},
+            {label:'Algodao (hist)', data:mkSolid(d.algodao,'#7F77DD'),borderColor:'#7F77DD',backgroundColor:'transparent',fill:false,tension:0.3,pointRadius:5,pointBackgroundColor:'#7F77DD',spanGaps:false},
+            {label:'Algodao (proj)', data:mkProj(d.algodao),           borderColor:'#7F77DD',backgroundColor:'transparent',fill:false,tension:0.3,pointRadius:6,pointBackgroundColor:'white',pointBorderColor:'#7F77DD',pointBorderWidth:2,borderDash:[6,4],spanGaps:false},
           ]
         },
-        options:{responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{position:'bottom',labels:{font:{size:10},color:'#888'}}},
-          scales:{x:{ticks:{color:'#888',font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}},
-                  y:{ticks:{color:'#888',font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}}}}
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{
+              position:'bottom',
+              labels:{
+                font:{size:10},color:'#888',
+                filter:function(item){ return item.text.indexOf('proj') === -1; }
+              }
+            },
+            tooltip:{
+              callbacks:{
+                label:function(ctx){
+                  var lbl = ctx.dataset.label || '';
+                  var isPj = lbl.indexOf('proj') !== -1;
+                  var name = lbl.replace(' (hist)','').replace(' (proj)','');
+                  return name + (isPj ? ' (proj 26/27)' : '') + ': ' + (ctx.parsed.y||'').toFixed(3);
+                }
+              }
+            }
+          },
+          scales:{
+            x:{ticks:{color:'#888',font:{size:10}},grid:{color:'rgba(0,0,0,0.05)'}},
+            y:{
+              ticks:{color:'#888',font:{size:10}},
+              grid:{color:'rgba(0,0,0,0.05)'},
+              title:{display:true,text:'sc por unidade',color:'#888',font:{size:10}}
+            }
+          }
+        }
       });
     }
     return;
